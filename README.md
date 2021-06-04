@@ -11,7 +11,7 @@ npm i express
 Nodemon installieren:
 npm i nodemon
 
-Nodemon Server ausführen:
+Server ausführen:
 npm run dev
 
 Server Ausführung beenden:
