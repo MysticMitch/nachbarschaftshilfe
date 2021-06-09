@@ -10,20 +10,17 @@ const connection = mysql.createConnection({
 
   function addGemeinde(bezeichnung, postleitzahl){
 	
-    if(bezeichnung === null || postleitzahl === null || bezeichnung === "" || postleitzahl === ""){
-      console.log("Leere Eingabe, Gemeinde konnte nicht hinzugefügt werden.");
-      return;
+    //Im Frontend abfangen dass Eingabe nicht leer sein darf und keine Zahl im String
+    if(typeof bezeichnung !== 'string' || typeof postleitzahl !== 'number'){
+      return false;
     }
 
-    let statement = `INSERT INTO gemeinde VALUES (default, '${bezeichnung}', ${postleitzahl}, 1, 0);`;
-    connection.query(statement, function (err, result) {
-    if (err){
-      console.log("Gemeinde konnte nicht angelegt werden.");
-      throw(err);
-    }
-    console.log("Gemeinde wurde hinzugefügt.");
+    connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1, 0);", [bezeichnung, postleitzahl], function (err, result) {
+    if (err){throw(err);}
+    return true;
     });
-  };
+  }
+
 
 exports.addGemeinde = addGemeinde;
 
