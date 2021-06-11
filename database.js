@@ -7,16 +7,20 @@ const connection = mysql.createConnection({
     database: "nachbarschaft"
   });
 
+  //Falls Datenbank ausgeschaltet ist
+  connection.on("error", function(err) {
+    console.log("Verbindung zur Datenbank fehlgeschlagen.");
+  })
 
   function addGemeinde(bezeichnung, postleitzahl){
-	
     //Im Frontend abfangen dass Eingabe nicht leer sein darf und keine Zahl im String
-    if(typeof bezeichnung !== 'string' || typeof postleitzahl !== 'number'){
+    if(typeof bezeichnung !== "string" || typeof postleitzahl !== "number"){
+      console.log("Gemeinde konnte nicht hinzugefügt werden. Prüfe Parameter.");
       return false;
     }
-
     connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1, 0);", [bezeichnung, postleitzahl], function (err, result) {
-    if (err){throw(err);}
+    if (err){console.log("Gemeinde konnte nicht hinzugefügt werden. Prüfe Query.");return false;}
+    console.log("Gemeinde wurde hinzugefügt");
     return true;
     });
   }
