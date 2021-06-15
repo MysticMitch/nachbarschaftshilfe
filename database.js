@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -12,8 +12,21 @@ const connection = mysql.createConnection({
     console.log("Verbindung zur Datenbank fehlgeschlagen.");
   });
 
-  function addWohnsitz(bezeichnung, postleitzahl, straße, hausnummer){
-    connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [bezeichnung, postleitzahl, straße, hausnummer], function (err, result) {
+
+  //--------------------------------------------------------
+
+//Alles hier kann zu einer database Servie Schicht kommen
+
+//Wohnsitz anlegen, dessen Primärschlüssel holen, Gemeinde anlegen mit fkWohnsitz
+function gemindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnummer){
+  addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
+  getWohnsitzPrimary(function(ergebnis){console.log("FK geholt: " + ergebnis);addGemeinde(ergebnis, bezeichnung);});
+}
+
+    //--------------------------------------------------------
+
+  function addWohnsitz(ortsname, postleitzahl, straße, hausnummer){
+    connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, postleitzahl, straße, hausnummer], function (err, result) {
       if (err){console.log("Wohnsitz konnte nicht hinzugefügt werden. Prüfe Query.");return false;}
       console.log("Wohnsitz wurde hinzugefügt");
       return true;
@@ -21,78 +34,55 @@ const connection = mysql.createConnection({
   }
 
 
-  function holPrim(){
-    let i = 0;
-    connection.query("SELECT * FROM wohnsitz;", function (err, result) {
-      if (err){console.log("FEHLER.");return;}
-      /*i = result;
-      console.log(result[0]);
-      console.log(i);
-      console.log(JSON.stringify(result));
-      console.log("---");
-      console.log(Object.values(JSON.parse(JSON.stringify(result))));
-      console.log(result[0].TextRow.
-    
-        let i = 0;
-        i = Object.values(JSON.parse(JSON.stringify(result))[0]);
-        console.log(i);
-        //Prints: [3]
-        i = i[0];
-        console.log(i);    */
+   function getWohnsitzPrimary(callback){
+    let ergebnis = null;
+    connection.query("SELECT max(idWohnsitz) FROM wohnsitz;", function (err, result) {
+      if (err){console.log("SELECT Statement fehlgeschlagen.");return callback(ergebnis);}
 
-        /*
-        console.log(result);
-
-        console.log(JSON.stringify(result)[0]);
-
-        console.log(JSON.parse(JSON.stringify(result))[0]);
-
-        console.log(Object.values(JSON.parse(JSON.stringify(result))[0]));
-
-        console.log(Object.values(JSON.parse(JSON.stringify(result))[0])[0]);
-
-        */
-
-        console.log(result);
-        console.log("-------------------");
-        console.log((result[0]).idWohnsitz);
-
-        console.log(Object.values(result[0]));
-
-        //console.log(Object.values(result[0])[0]);
-
-        //console.log((result[0])[0]); 
-
-        //console.log(Object.values(result));
-
+      ergebnis = (Object.values(result[0])[0]);
+      console.log("Ergebnis: " + ergebnis);
+      return callback(ergebnis);
       });
-
- 
   }
 
-  function addGemeinde(bezeichnung, wohnort, postleitzahl, straße, hausnummer){
 
+  function addGemeinde(fkWohnsitz, bezeichnung){
 
+    if(fkWohnsitz === null){
+      console.log("Fremdschlüssel ist unbekannt ${fkWohnsitz} Geminde wurde nicht hinzugefügt.");
+      return false;
+    }
 
-
-    connection.query("INSERT INTO gemeinde VALUES (default, default, ?, 1, 0);", [bezeichnung], function (err, result) {
+    connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1, 0);", [fkWohnsitz, bezeichnung], function (err, result) {
     if (err){console.log("Gemeinde konnte nicht hinzugefügt werden. Prüfe Query.");return false;}
     console.log("Gemeinde wurde hinzugefügt");
     return true;
     });
   }
 
-  function addPerson(nutzername, passwort, vorname, nachname, telefon){
-    connection.query("INSERT INTO person VALUES (default, default, ?, ?, ?, ?, ?, 0);", [nutzername, passwort, vorname, nachname, telefon], function (err, result) {
+  function addPerson(fkWohnsitz, nutzername, passwort, vorname, nachname, telefon){
+    connection.query("INSERT INTO person VALUES (default, ?, ?, ?, ?, ?, ?, 0);", [fkWohnsitz, nutzername, passwort, vorname, nachname, telefon], function (err, result) {
       if (err){console.log("Person konnte nicht hinzugefügt werden. Prüfe Query.");return false;}
       console.log("Person wurde hinzugefügt");
       return true;
       });
   }
 
-exports.holPrim = holPrim;
-exports.addGemeinde = addGemeinde;
+exports.getWohnsitzPrimary = getWohnsitzPrimary;
+exports.gemindeAnlegen = gemindeAnlegen;
 exports.addPerson = addPerson;
+exports.addWohnsitz = addWohnsitz;
+
+
+
+
+
+
+
+
+
+
+
 
 //Gemeinde erstellen
 //Gemeinde editieren

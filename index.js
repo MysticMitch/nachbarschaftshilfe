@@ -8,8 +8,12 @@ app.get("/", function(req,res){res.send("<h1>Hi</h1>");});
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(logger);    
 
-db.holPrim();
+db.gemindeAnlegen("Aldi Süd", "Ravensburg", 88212, "Hallostraße", 11);
 
+/*
+db.getWohnsitzPrimary(function(result){
+    console.log(result);
+ });*/
 
 //db.addWohnsitz("Südstadt", 888212, 20, "Test");
 //db.addGemeinde("Neu", 400);
