@@ -20,10 +20,35 @@ const connection = mysql.createConnection({
 //Wohnsitz anlegen, dessen Primärschlüssel holen, Gemeinde anlegen mit fkWohnsitz
 function gemindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnummer){
   addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
-  getWohnsitzPrimary(function(ergebnis){console.log("FK geholt: " + ergebnis);addGemeinde(ergebnis, bezeichnung);});
+  getWohnsitzPrimary(function(fkWohnsitz){console.log("FK für Gemeinde geholt: " + fkWohnsitz);addGemeinde(fkWohnsitz, bezeichnung);});
 }
 
+function personAnlegen(nutzername, passwort, vorname, nachname, telefon, ortsname, postleitzahl, straße, hausnummer){
+  addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
+  getWohnsitzPrimary(function(fkWohnsitz){console.log("FK für Person geholt: " + fkWohnsitz);addPerson(fkWohnsitz, nutzername, passwort, vorname, nachname, telefon);});
+}
+
+//ProduktArray ist ein Array das alle Produkte enthält die mit der Einkaufsliste angelegt werden
+function einkaufslisteAnlegen(idAusgeber, idGemeinde, produkte){
+  addEinkaufsliste(idAusgeber, idGemeinde);
+  getEinkaufslistePrimary(function(fkEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(fkEinkaufsliste, produkte[i].bezeichnung, produkte[i].marke, produkte[i].menge, produkte[i].kilogramm, produkte[i].liter, produkte[i].preis);}})
+}
+
+
+
     //--------------------------------------------------------
+
+function getEinkaufslistePrimary(callback){
+  let ergebnis = null;
+    connection.query("SELECT max(idEinkaufsliste) FROM produkt;", function (err, result) {
+      if (err){console.log("SELECT Statement fehlgeschlagen.");return callback(ergebnis);}
+
+      ergebnis = (Object.values(result[0])[0]);
+      console.log("Max ID von Einkaufsliste ist: " + ergebnis);
+      return callback(ergebnis);
+      });
+}
+
 
   function addWohnsitz(ortsname, postleitzahl, straße, hausnummer){
     connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, postleitzahl, straße, hausnummer], function (err, result) {
@@ -40,19 +65,17 @@ function gemindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnummer
       if (err){console.log("SELECT Statement fehlgeschlagen.");return callback(ergebnis);}
 
       ergebnis = (Object.values(result[0])[0]);
-      console.log("Ergebnis: " + ergebnis);
+      console.log("Max ID von Wohnsitz ist: " + ergebnis);
       return callback(ergebnis);
       });
   }
 
 
   function addGemeinde(fkWohnsitz, bezeichnung){
-
     if(fkWohnsitz === null){
       console.log("Fremdschlüssel ist unbekannt ${fkWohnsitz} Geminde wurde nicht hinzugefügt.");
       return false;
     }
-
     connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1, 0);", [fkWohnsitz, bezeichnung], function (err, result) {
     if (err){console.log("Gemeinde konnte nicht hinzugefügt werden. Prüfe Query.");return false;}
     console.log("Gemeinde wurde hinzugefügt");
@@ -70,13 +93,32 @@ function gemindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnummer
 
 exports.getWohnsitzPrimary = getWohnsitzPrimary;
 exports.gemindeAnlegen = gemindeAnlegen;
-exports.addPerson = addPerson;
+exports.einkaufslisteAnlegen = einkaufslisteAnlegen;
 exports.addWohnsitz = addWohnsitz;
+exports.personAnlegen = personAnlegen;
+exports.addEinkaufsliste = addEinkaufsliste;
+exports.addProdukt = addProdukt;
 
 
+function addEinkaufsliste(idAusgeber, idGemeinde){
+  let datum = new Date();
+  let bearbeiter = null;
 
+  connection.query("INSERT INTO einkaufsliste VALUES (default, ?, ?, ?, ?, 0, 0);", [idGemeinde, idAusgeber, bearbeiter, datum], function (err, result) {
+    if (err){console.log("Einkaufsliste konnte nicht hinzugefügt werden. Prüfe Query.");return false;}
+    console.log("Einkaufsliste wurde hinzugefügt");
+    return true;
+    });
+}
 
+function addProdukt(idListe, bezeichnung, marke, menge, kilogramm, liter, preis){
+  connection.query("INSERT INTO produkt VALUES (default, ?, ?, ?, ?, ?, ?, ?);", [idListe, bezeichnung, marke, menge, kilogramm, liter, preis], function (err, result) {
+    if (err){console.log("Produkt konnte nicht hinzugefügt werden. Prüfe Query.");console.log(err);return false;}
+    console.log("Produkt wurde hinzugefügt");
+    return true;
+    });
 
+}
 
 
 
