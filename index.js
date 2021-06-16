@@ -16,13 +16,17 @@ app.use(logger);
 
 //db.addProdukt(1, "Apfel", "Oetker", 10, 5.0, 10.5, 0.7);
 
-
+/*
 let produktA = {bezeichnung:"Capri", marke:"Oetker", menge:10, kilogramm:5 ,liter:7, preis:50};
 let produktB = {bezeichnung:"Sonne", marke:"Oetker", menge:10, kilogramm:5 ,liter:7, preis:50};
 
 let produkte = [produktA, produktB];
 
 db.einkaufslisteAnlegen(1,22, produkte);
+*/
+
+db.addBeitritt(2,22);
+
 
 //console.log(produktReihe[0].marke);
 

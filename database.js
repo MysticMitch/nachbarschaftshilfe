@@ -35,12 +35,27 @@ function einkaufslisteAnlegen(idAusgeber, idGemeinde, produkte){
 }
 
 
-
     //--------------------------------------------------------
+
+    function alterBearbeiter(){
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+        //--------------------------------------------------------
 
 function getEinkaufslistePrimary(callback){
   let ergebnis = null;
-    connection.query("SELECT max(idEinkaufsliste) FROM produkt;", function (err, result) {
+    connection.query("SELECT max(idEinkaufsliste) FROM einkaufsliste;", function (err, result) {
       if (err){console.log("SELECT Statement fehlgeschlagen.");return callback(ergebnis);}
 
       ergebnis = (Object.values(result[0])[0]);
@@ -49,6 +64,23 @@ function getEinkaufslistePrimary(callback){
       });
 }
 
+  function addBeitritt(idPerson, idGemeinde){
+    let datum = new Date();
+
+    //Prüfe ob Person bereits beigetreten ist. Wenn nein kann sie beitreten
+    connection.query("SELECT * FROM beigetreten WHERE fkPerson = ? AND fkGemeinde = ?;", [idPerson, idGemeinde], function (err, result) {
+      if (err){console.log("Person konnte einer Gemeinde nicht beitreten. Prüfe Query.");return false;}
+      if(result.length > 0){
+        console.log("Person exisiert bereits in der Gemeinde.");
+        return false;
+      } else {
+        connection.query("INSERT INTO beigetreten VALUES (?, ?, ?);", [idPerson, idGemeinde, datum], function (err, result) {
+          if (err){console.log("Person konnte einer Gemeinde nicht beitreten. Prüfe Query.");return false;}
+          console.log("Person ist einer Gemeinde beigetreten.");
+          return true;
+          });}
+  });
+}
 
   function addWohnsitz(ortsname, postleitzahl, straße, hausnummer){
     connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, postleitzahl, straße, hausnummer], function (err, result) {
@@ -91,15 +123,6 @@ function getEinkaufslistePrimary(callback){
       });
   }
 
-exports.getWohnsitzPrimary = getWohnsitzPrimary;
-exports.gemindeAnlegen = gemindeAnlegen;
-exports.einkaufslisteAnlegen = einkaufslisteAnlegen;
-exports.addWohnsitz = addWohnsitz;
-exports.personAnlegen = personAnlegen;
-exports.addEinkaufsliste = addEinkaufsliste;
-exports.addProdukt = addProdukt;
-
-
 function addEinkaufsliste(idAusgeber, idGemeinde){
   let datum = new Date();
   let bearbeiter = null;
@@ -121,9 +144,13 @@ function addProdukt(idListe, bezeichnung, marke, menge, kilogramm, liter, preis)
 }
 
 
-
-
-
+exports.addBeitritt = addBeitritt;
+exports.gemindeAnlegen = gemindeAnlegen;
+exports.einkaufslisteAnlegen = einkaufslisteAnlegen;
+exports.addWohnsitz = addWohnsitz;
+exports.personAnlegen = personAnlegen;
+exports.addEinkaufsliste = addEinkaufsliste;
+exports.addProdukt = addProdukt;
 
 
 //Gemeinde erstellen
