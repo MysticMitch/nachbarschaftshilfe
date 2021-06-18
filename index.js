@@ -22,7 +22,7 @@ let produktB = {bezeichnung:"Sonne", marke:"Oetker", menge:10, kilogramm:5 ,lite
 
 let produkte = [produktA, produktB];
 
-db.einkaufslisteAnlegen(1,22, produkte);
+db.einkaufslisteAnlegen(1,22, produkte); 
 */
 
 db.addBeitritt(2,22);

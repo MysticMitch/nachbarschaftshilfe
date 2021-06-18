@@ -140,7 +140,6 @@ function addProdukt(idListe, bezeichnung, marke, menge, kilogramm, liter, preis)
     console.log("Produkt wurde hinzugefügt");
     return true;
     });
-
 }
 
 
@@ -175,12 +174,10 @@ exports.addProdukt = addProdukt;
 
 //Wohnsitz anlegen (durch Person oder Gemeinde)
 //Wohnsitz ändern
+//Wohnsitz löschen (wenn Person oder Geminde gelöscht?)
 
-    /*Im Frontend abfangen dass Eingabe nicht leer sein darf und keine Zahl im String
-    Und wenn man zB Hausnummer auslassen will, soll ein NULL rein und die Daten nicht verrutschen
-    Frage ist, was kommt von leeren Eingabe vom Frontend rein? Undefined?
 
-    if(typeof bezeichnung !== "string"){
-      console.log("Gemeinde konnte nicht hinzugefügt werden. Prüfe Parameter.");
-      return false;
-    }*/
+  //Frontend leere Eingaben abfangen:
+  //Im Frontend versuchen abzufangen
+  //Backend Methode: Nimmt Para, falls undefined oder "" wird zu null
+  //Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es
