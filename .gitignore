@@ -105,3 +105,4 @@ dist
 
 # Admin user & password for database
 database\connection.js
+database\credentials.js
