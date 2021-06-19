@@ -103,6 +103,10 @@ dist
 # TernJS port file
 .tern-port
 
+
+# data/**/*.json
+
+
+
 # Admin user & password for database
-database\connection.js
-database\credentials.js
+database/connection.js
