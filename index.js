@@ -2,11 +2,50 @@ const express = require("express");
 const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
-const db = require("./database");
+const db = require("./database/databaseAdd.js");
 
 app.get("/", function(req,res){res.send("<h1>Hi</h1>");});
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(logger);    
+
+
+
+
+db.personAnlegen("EpicMan", "Test", "Tim", "Bovo", 053532, "Weingarten", 88284, "Kolpstr", 10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //db.gemindeAnlegen("Aldi Süd", "Ravensburg", 88212, "Hallostraße", 11);
 
@@ -25,7 +64,9 @@ let produkte = [produktA, produktB];
 db.einkaufslisteAnlegen(1,22, produkte); 
 */
 
-db.addBeitritt(2,22);
+//db.addBeitritt(2,22);
+
+//db.gemeindeAnlegen("Südstadt", "Weingarten", 88100, "Lauch", 22);
 
 
 //console.log(produktReihe[0].marke);
