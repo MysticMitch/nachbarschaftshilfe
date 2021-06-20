@@ -92,6 +92,17 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
       return callback(true);
     });
   }
+
+  function existGemeinde(bezeichnung, callback){
+    connection.query("SELECT * FROM gemeinde WHERE bezeichnung = ?;", [bezeichnung], function (err, result) {
+      if (err){console.log("Fehler beim Vergleich aufgetreten, ob Gemeinde bereits existiert.");return false;}
+      if(result.length > 0){
+        console.log("Gemeinde existiert bereits. Gemeinde wurde nicht angelegt.");
+        return callback(false);
+      }
+      return callback(true);
+    });
+  }
   
   function addEinkaufsliste(idAusgeber, idGemeinde){
     let datum = new Date();
@@ -118,8 +129,9 @@ function addProdukt(idListe, bezeichnung, marke, menge, kilogramm, liter, preis)
 
 //Wohnsitz anlegen, dessen Primärschlüssel holen, Gemeinde anlegen mit fkWohnsitz
 function gemeindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnummer){
-  addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
+  existGemeinde(bezeichnung, function(ergebnis){if(ergebnis ===false){return;}addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
   getWohnsitzPrimary(function(fkWohnsitz){console.log("FK für Gemeinde geholt: " + fkWohnsitz);addGemeinde(fkWohnsitz, bezeichnung);});
+});
 }
 
 //Produkte ist ein Array das alle Produkte enthält die mit der Einkaufsliste angelegt werden
@@ -130,7 +142,7 @@ function einkaufslisteAnlegen(idAusgeber, idGemeinde, produkte){
 
 //Achtung, Callback Funktion geht weiter als erste Zeile
 function personAnlegen(nutzername, passwort, vorname, nachname, telefon, ortsname, postleitzahl, straße, hausnummer){
-  existNutzername(nutzername, function(result){if(result === false){return;};addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
+  existNutzername(nutzername, function(ergebnis){if(ergebnis === false){return;};addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
   getWohnsitzPrimary(function(fkWohnsitz){console.log("FK für Person geholt: " + fkWohnsitz);addPerson(fkWohnsitz, nutzername, passwort, vorname, nachname, telefon);});
   });
 }
