@@ -2,10 +2,12 @@ const express = require("express");
 const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
-const db = require("./database/databaseAdd.js");
-const dbEdit = require("./database/databaseEdit.js");
+//const db = require("./database/databaseAdd.js");
+//const dbEdit = require("./database/databaseEdit.js");
 
-app.get("/", function(req,res){res.send("<h1>Hi</h1>");});
+app.set("view-engine", "ejs");
+
+app.get("/", function(req,res){res.render("index.ejs")});
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(logger);    
 
@@ -13,7 +15,7 @@ app.use(logger);
 //db.personAnlegen("EpicMan", "Test", "Tim", "Bovo", 053532, "Weingarten", 88284, "Kolpstr", 10);
 //db.gemeindeAnlegen("7 Zwerge", "Frankfurt", 53520, "Klausstraße", 5);
 
-dbEdit.updateBearbeiter(2, 10);
+//dbEdit.updateBearbeiter(2, 10);
 
 
 

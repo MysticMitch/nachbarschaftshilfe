@@ -16,3 +16,6 @@ npm run dev
 
 Server Ausführung beenden:
 STRG+C
+
+EJS einbinden:
+npm i ejs
