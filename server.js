@@ -1,22 +1,71 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
 const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-//const db = require("./database/databaseAdd.js");
+const dbRead = require("./database/databaseRead.js");
+const db = require("./database/databaseAdd.js");
+const { response } = require("express");
 //const dbEdit = require("./database/databaseEdit.js");
-
+  
 app.set("view-engine", "ejs");
-
-app.get("/", function(req,res){res.render("index.ejs", {Neu:["Test", "Nugget", "Burger"], Last:"Derp"})});
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
-app.use(logger);    
+app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
+app.use(logger); 
+
+app.get("/", function(req,res){res.render("login.ejs")});
+
+app.get("/login", (req, res) => {
+    res.render("login.ejs");
+});
+
+app.get("/register", (req, res) => {
+    res.render("register.ejs");
+});
+
+app.get("/index", (req, res) => {
+    res.render("index.ejs");
+});
+
+app.get("/menu", (req, res) => {
+    res.render("menu.ejs");
+});
+
+app.post("/login", async (req, res) =>{
+try{
+
+    let dbPasswort = await dbRead.getPassword(req.body.nutzername);
+    let vergleich = await bcrypt.compare(req.body.passwort, dbPasswort);
+
+    if(vergleich){
+        console.log("Login.");
+        res.redirect("/index");
+    }else{
+        console.log("Daten falsch");
+        res.redirect("/login");
+    }
+}
+catch {
+    console.log("Fehler");
+    res.redirect("/index");
+}
+});
 
 
-
-
-
-
+app.post("/register", async (req, res) =>{
+    try{
+        const salt = await bcrypt.genSalt(10);
+        let passwort = await bcrypt.hash(req.body.passwort, salt);
+        console.log(passwort);
+        db.personAnlegen(req.body.nutzername, passwort, req.body.vorname, req.body.nachname, req.body.telefon, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
+        res.redirect("/login");
+    }
+    catch {
+        console.log("Fehler");
+        res.redirect("/index");
+    }
+    });
 
 
 
