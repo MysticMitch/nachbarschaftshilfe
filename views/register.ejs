@@ -13,22 +13,19 @@
   <form action=/register method="POST">
 
     <label for="nutzername">Nutzername</label>
-    <input type="text" id="nutzername" name="nutzername"><br><br>
+    <input type="text" id="nutzername" name="nutzername" required><br><br>
 
     <label for="passwort">Passwort</label>
-    <input type="password" id="passwort" name="passwort"><br><br>
+    <input type="password" id="passwort" name="passwort" required><br><br>
 
     <label for="vorname">Vorname</label>
-    <input type="text" id="vorname" name="vorname"><br><br>
+    <input type="text" id="vorname" name="vorname" required><br><br>
 
     <label for="nachname">Nachname</label>
-    <input type="text" id="nachname" name="nachname"><br><br>
-
-    <label for="telefon">Telefonnummer</label>
-    <input type="number" id="telefon" name="telefon"><br><br>
+    <input type="text" id="nachname" name="nachname" required><br><br>
 
     <label for="ortsname">Wohnort</label>
-    <input type="text" id="ortsname" name="ortsname"><br><br>
+    <input type="text" id="ortsname" name="ortsname" required><br><br>
 
     <label for="plz">Postleitzahl</label>
     <input type="number" id="plz" name="plz"><br><br>
@@ -38,6 +35,9 @@
 
     <label for="hausnr">Hausnummer</label>
     <input type="text" id="hausnr" name="hausnr"><br><br>
+
+    <label for="telefon">Telefonnummer</label>
+    <input type="number" id="telefon" name="telefon"><br><br>
 
     <input type="submit" value="Registrieren"><br><br>
   </form>

@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
+const ejs = require("ejs");
 
 const dbRead = require("./database/databaseRead.js");
 const db = require("./database/databaseAdd.js");
@@ -12,44 +13,44 @@ const { response } = require("express");
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
-app.use(logger); 
+//app.use(logger); 
 
 app.get("/", function(req,res){res.render("login.ejs")});
 
 app.get("/login", (req, res) => {
-    res.render("login.ejs");
+  res.render("login.ejs");
 });
 
 app.get("/register", (req, res) => {
-    res.render("register.ejs");
+  res.render("register.ejs");
 });
 
 app.get("/index", (req, res) => {
-    res.render("index.ejs");
+  res.render("index.ejs");
 });
 
 app.get("/menu", (req, res) => {
-    res.render("menu.ejs");
+  let zeug = ["Eins", "Zwei", "Drei"];
+  res.render("menu.ejs", {daten:zeug});
 });
 
-app.post("/login", async (req, res) =>{
-try{
-
+app.post("/login", async (req, res) => {
+  try {
     let dbPasswort = await dbRead.getPassword(req.body.nutzername);
     let vergleich = await bcrypt.compare(req.body.passwort, dbPasswort);
 
-    if(vergleich){
-        console.log("Login.");
-        res.redirect("/index");
-    }else{
-        console.log("Daten falsch");
-        res.redirect("/login");
+    console.log("PW Vergleich: " + vergleich);
+
+    if (vergleich) {
+      console.log("Login.");
+      res.redirect("/menu");
+    } else {
+      console.log("Daten falsch.");
+      res.redirect("/login");
     }
-}
-catch {
+  } catch {
     console.log("Fehler");
-    res.redirect("/index");
-}
+  }
 });
 
 
@@ -65,7 +66,7 @@ app.post("/register", async (req, res) =>{
         console.log("Fehler");
         res.redirect("/index");
     }
-    });
+  });
 
 
 
