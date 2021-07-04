@@ -3,11 +3,10 @@ const bcrypt = require("bcryptjs");
 const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
-const ejs = require("ejs");
 
 const dbRead = require("./database/databaseRead.js");
-const db = require("./database/databaseAdd.js");
-const { response } = require("express");
+const dbAdd = require("./database/databaseAdd.js");
+//const { response } = require("express");
 //const dbEdit = require("./database/databaseEdit.js");
   
 app.set("view-engine", "ejs");
@@ -29,9 +28,31 @@ app.get("/index", (req, res) => {
   res.render("index.ejs");
 });
 
-app.get("/menu", (req, res) => {
+app.get("/einkaufen", (req, res) => {
+  res.render("einkaufen.ejs");
+});
+
+app.get("/empfangen", (req, res) => {
+  res.render("empfangen.ejs");
+});
+
+
+app.get("/grunden",  (req, res) => {
+  res.render("gründen.ejs");
+});
+
+app.get("/test", (req, res) => {
   let zeug = ["Eins", "Zwei", "Drei"];
-  res.render("menu.ejs", {daten:zeug});
+  res.render("test.ejs", {daten:zeug});
+});
+
+app.get("/menu", (req, res) => {
+  res.render("menu.ejs");
+});
+
+app.get("/ansehen", async (req, res) => {
+  let gemeinden = await dbRead.getGemeinden();
+  res.render("ansehen.ejs", {daten:gemeinden});
 });
 
 app.post("/login", async (req, res) => {
@@ -39,17 +60,16 @@ app.post("/login", async (req, res) => {
     let dbPasswort = await dbRead.getPassword(req.body.nutzername);
     let vergleich = await bcrypt.compare(req.body.passwort, dbPasswort);
 
-    console.log("PW Vergleich: " + vergleich);
-
     if (vergleich) {
-      console.log("Login.");
+      console.log("Login erfolgreich.");
       res.redirect("/menu");
     } else {
-      console.log("Daten falsch.");
+      console.log("Login fehlgeschlagen.");
       res.redirect("/login");
     }
   } catch {
     console.log("Fehler");
+    res.redirect("/errorpage");
   }
 });
 
@@ -59,24 +79,26 @@ app.post("/register", async (req, res) =>{
         const salt = await bcrypt.genSalt(10);
         let passwort = await bcrypt.hash(req.body.passwort, salt);
         console.log(passwort);
-        db.personAnlegen(req.body.nutzername, passwort, req.body.vorname, req.body.nachname, req.body.telefon, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
+        dbAdd.personAnlegen(req.body.nutzername, passwort, req.body.vorname, req.body.nachname, req.body.telefon, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
         res.redirect("/login");
     }
     catch {
         console.log("Fehler");
-        res.redirect("/index");
+        res.redirect("/errorpage");
     }
   });
 
-
-
-
-
-
-
-
-
-
+  app.post("/grunden", async (req, res) =>{
+    try{
+      dbAdd.gemeindeAnlegen(req.body.bezeichnung, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
+        console.log("Gemeinschaft wurde angelegt.");
+        res.redirect("/menu");
+    }
+    catch {
+        console.log("Fehler");
+        res.redirect("/errorpage");
+    }
+  });
 
 
 

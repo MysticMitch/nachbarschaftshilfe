@@ -10,10 +10,10 @@ connection = connection.connection; //Modul.Methode
     
     return new Promise((resolve, reject) => {
         connection.query("SELECT passwort FROM person WHERE nutzername= ?;", [nutzername], function (err, result) {
-          if (err){return null;}
+          if (err){return resolve("");}
 
           if(result == ""){
-            console.log("Kein DB Treffer.");
+            console.log("Nutzer nicht in der Datenbank vorhanden.");
             return resolve("");
           }
           return resolve(Object.values(result[0])[0]);
@@ -21,7 +21,39 @@ connection = connection.connection; //Modul.Methode
     });
   }
 
+  function getGemeinden(){
+    
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM gemeinde;", function (err, result) {
+          if (err){return resolve("");}
+
+          if(result == ""){
+            console.log("Keine Gemeinden vorhanden.");
+            return resolve("");
+          }
+          //return resolve(Object.values(result));
+          return resolve(result);
+        });
+    });
+  }
+
+  function getGemeinden(){
+    
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * from gemeinde, wohnsitz WHERE gemeinde.fkWohnsitz = wohnsitz.idWohnsitz;", function (err, result) {
+          if (err){return resolve("");}
+
+          if(result == ""){
+            console.log("Keine Gemeinden vorhanden.");
+            return resolve("");
+          }
+          //return resolve(Object.values(result));
+          return resolve(result);
+        });
+    });
+  }
 
 
 
   module.exports.getPassword = getPassword;
+  module.exports.getGemeinden = getGemeinden;

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemeinschaft ansehen</title>
+</head>
+<body>
+
+    <h1>Alle Gemeinschaften ansehen</h1>
+
+    <p>Anzahl Gemeinden: <% daten.length %> </p>
+
+    <ul>
+        <% for(var i=0; i < daten.length; i++) { %>
+           
+             <li><%= daten[i].Bezeichnung %> , Mitglieder: <%= daten[i].Mitglieder %> <%= daten[i].Kilometer%> <%= daten[i].Ortsname%> <%= daten[i].Postleitzahl%> <%= daten[i].Strasse%> <%= daten[i].Hausnummer%></li>
+                <form action="test"><input type="submit" value="Test"/></form><br>
+        
+        <% } %>
+        </ul>
+
+</body>
+</html>

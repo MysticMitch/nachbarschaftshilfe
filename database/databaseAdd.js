@@ -129,7 +129,7 @@ function addProdukt(idListe, bezeichnung, marke, menge, kilogramm, liter, preis)
 
 //Wohnsitz anlegen, dessen Primärschlüssel holen, Gemeinde anlegen mit fkWohnsitz
 function gemeindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnummer){
-  existGemeinde(bezeichnung, function(ergebnis){if(ergebnis ===false){return;}addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
+  existGemeinde(bezeichnung, function(ergebnis){if(ergebnis === false){return;}addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
   getWohnsitzPrimary(function(fkWohnsitz){console.log("FK für Gemeinde geholt: " + fkWohnsitz);addGemeinde(fkWohnsitz, bezeichnung);});
 });
 }
