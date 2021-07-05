@@ -12,14 +12,17 @@
 
     <p>Anzahl Gemeinden: <% daten.length %> </p>
 
-    <ul>
+    
         <% for(var i=0; i < daten.length; i++) { %>
-           
-             <li><%= daten[i].Bezeichnung %> , Mitglieder: <%= daten[i].Mitglieder %> <%= daten[i].Kilometer%> <%= daten[i].Ortsname%> <%= daten[i].Postleitzahl%> <%= daten[i].Strasse%> <%= daten[i].Hausnummer%></li>
-                <form action="test"><input type="submit" value="Test"/></form><br>
-        
-        <% } %>
-        </ul>
+
+            <ul>  
+            <li> <%=i+1%> <%= daten[i].Bezeichnung %> , Mitglieder: <%= daten[i].Mitglieder %> <%= daten[i].Kilometer%> <%= daten[i].Ortsname%> <%= daten[i].Postleitzahl%> <%= daten[i].Strasse%> <%= daten[i].Hausnummer%></li><br><br>
+            </ul>
+            <form method="POST" action="test">
+                <input type="submit" name=beitreten<%=i%> value=Beitreten>
+            </form>
+            <% } %>
+      
 
 </body>
 </html>

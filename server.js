@@ -1,8 +1,10 @@
 const express = require("express");
+const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
+
 
 const dbRead = require("./database/databaseRead.js");
 const dbAdd = require("./database/databaseAdd.js");
@@ -12,6 +14,7 @@ const dbAdd = require("./database/databaseAdd.js");
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
+app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
 //app.use(logger); 
 
 app.get("/", function(req,res){res.render("login.ejs")});
@@ -42,12 +45,34 @@ app.get("/grunden",  (req, res) => {
 });
 
 app.get("/test", (req, res) => {
-  let zeug = ["Eins", "Zwei", "Drei"];
-  res.render("test.ejs", {daten:zeug});
+  let x = req.body.name;
+  res.render("test.ejs");
+});
+
+app.post("/test", (req, res) => {
+
+let i = 0;
+let arr = [];
+
+  while(i < 6){
+    arr.push(req.body[`beitreten${i}`]);
+    //arr.push(req.body.beitreten+i);
+
+    i++;
+  }
+
+console.log(arr);
+
+  res.render("test.ejs");
 });
 
 app.get("/menu", (req, res) => {
+  if(req.session.success == true){
   res.render("menu.ejs");
+  } else {
+    res.redirect("login");
+  }
+
 });
 
 app.get("/ansehen", async (req, res) => {
@@ -62,6 +87,8 @@ app.post("/login", async (req, res) => {
 
     if (vergleich) {
       console.log("Login erfolgreich.");
+      req.session.idperson = await dbRead.getID(req.body.nutzername);
+      req.session.success = true;
       res.redirect("/menu");
     } else {
       console.log("Login fehlgeschlagen.");
@@ -100,8 +127,10 @@ app.post("/register", async (req, res) =>{
     }
   });
 
-
-
+  app.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.redirect("login");
+  });
 
 
 
