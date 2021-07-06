@@ -10,15 +10,14 @@
 
     <h1>Alle Gemeinschaften ansehen</h1>
 
-    <p>Anzahl Gemeinden: <% daten.length %> </p>
+    <p>Anzahl Gemeinden: <% gemeinden.length %> </p>
 
-    
-        <% for(var i=0; i < daten.length; i++) { %>
+        <% for(var i=0; i < gemeinden.length; i++) { %>
 
             <ul>  
-            <li> <%=i+1%> <%= daten[i].Bezeichnung %> , Mitglieder: <%= daten[i].Mitglieder %> <%= daten[i].Kilometer%> <%= daten[i].Ortsname%> <%= daten[i].Postleitzahl%> <%= daten[i].Strasse%> <%= daten[i].Hausnummer%></li><br><br>
+            <li> <%=i+1%> <%= gemeinden[i].Bezeichnung %> , Mitglieder: <%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></li><br><br>
             </ul>
-            <form method="POST" action="test">
+            <form method="POST" action="beitreten">
                 <input type="submit" name=beitreten<%=i%> value=Beitreten>
             </form>
             <% } %>

@@ -11,10 +11,11 @@ const dbAdd = require("./database/databaseAdd.js");
 //const { response } = require("express");
 //const dbEdit = require("./database/databaseEdit.js");
   
+app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
-app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
+
 //app.use(logger); 
 
 app.get("/", function(req,res){res.render("login.ejs")});
@@ -24,60 +25,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  res.render("register.ejs");
-});
-
-app.get("/index", (req, res) => {
-  res.render("index.ejs");
-});
-
-app.get("/einkaufen", (req, res) => {
-  res.render("einkaufen.ejs");
-});
-
-app.get("/empfangen", (req, res) => {
-  res.render("empfangen.ejs");
-});
-
-
-app.get("/grunden",  (req, res) => {
-  res.render("gründen.ejs");
-});
-
-app.get("/test", (req, res) => {
-  let x = req.body.name;
-  res.render("test.ejs");
-});
-
-app.post("/test", (req, res) => {
-
-let i = 0;
-let arr = [];
-
-  while(i < 6){
-    arr.push(req.body[`beitreten${i}`]);
-    //arr.push(req.body.beitreten+i);
-
-    i++;
-  }
-
-console.log(arr);
-
-  res.render("test.ejs");
-});
-
-app.get("/menu", (req, res) => {
-  if(req.session.success == true){
-  res.render("menu.ejs");
-  } else {
-    res.redirect("login");
-  }
-
-});
-
-app.get("/ansehen", async (req, res) => {
-  let gemeinden = await dbRead.getGemeinden();
-  res.render("ansehen.ejs", {daten:gemeinden});
+    res.render("register.ejs");
 });
 
 app.post("/login", async (req, res) => {
@@ -115,7 +63,53 @@ app.post("/register", async (req, res) =>{
     }
   });
 
+//-------------------------------------------------------------------------
+
+/*app.get("/index", (req, res) => {
+  res.render("index.ejs");
+});*/
+
+app.get("/einkaufen", (req, res) => {
+  if(req.session.success !== true){
+    res.redirect("login");
+  }
+    res.render("einkaufen.ejs");
+});
+
+app.get("/empfangen", (req, res) => {
+  if(req.session.success !== true){
+    res.redirect("login");
+  }
+    res.render("empfangen.ejs");
+});
+
+
+app.get("/grunden",  (req, res) => {
+  if(req.session.success !== true){
+    res.redirect("login");
+  }
+    res.render("gründen.ejs");
+});
+
+app.get("/menu", (req, res) => {
+  if(req.session.success !== true){
+    res.redirect("login");
+  }
+  res.render("menu.ejs");
+});
+
+app.get("/ansehen", async (req, res) => {
+  if(req.session.success !== true){
+    res.redirect("login");
+  }
+    let gemeinden = await dbRead.getGemeinden();
+    res.render("ansehen.ejs", {gemeinden});
+});
+
   app.post("/grunden", async (req, res) =>{
+    if(req.session.success !== true){
+      res.redirect("login");
+    }
     try{
       dbAdd.gemeindeAnlegen(req.body.bezeichnung, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
         console.log("Gemeinschaft wurde angelegt.");
@@ -133,9 +127,23 @@ app.post("/register", async (req, res) =>{
   });
 
 
+//---------------------------------------------------------------
 
+app.get("/test", (req, res) => {
+  res.render("test.ejs");
+});
 
-
+app.post("/beitreten", (req, res) => {
+let i = 0;
+let arr = [];
+while(i < 6){
+  arr.push(req.body[`beitreten${i}`]);
+  //arr.push(req.body.beitreten+i);
+  i++;
+}
+console.log(arr);
+res.render("test.ejs");
+});
 
 
 
