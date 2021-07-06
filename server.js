@@ -11,20 +11,22 @@ const dbAdd = require("./database/databaseAdd.js");
 //const { response } = require("express");
 //const dbEdit = require("./database/databaseEdit.js");
   
-app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
 app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
+app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
 
 //app.use(logger); 
 
-app.get("/", function(req,res){res.render("login.ejs")});
+app.get("/", function(req,res){req.session.success=false; res.render("login.ejs");});
 
 app.get("/login", (req, res) => {
+  req.session.success = false;
   res.render("login.ejs");
 });
 
 app.get("/register", (req, res) => {
+    req.session.success = false;
     res.render("register.ejs");
 });
 
@@ -37,17 +39,16 @@ app.post("/login", async (req, res) => {
       console.log("Login erfolgreich.");
       req.session.idperson = await dbRead.getID(req.body.nutzername);
       req.session.success = true;
-      res.redirect("/menu");
+      res.render("menu.ejs");
     } else {
       console.log("Login fehlgeschlagen.");
-      res.redirect("/login");
+      res.render("login.ejs");
     }
   } catch {
     console.log("Fehler");
-    res.redirect("/errorpage");
+    res.render("errorpage.ejs");
   }
 });
-
 
 app.post("/register", async (req, res) =>{
     try{
@@ -55,30 +56,33 @@ app.post("/register", async (req, res) =>{
         let passwort = await bcrypt.hash(req.body.passwort, salt);
         console.log(passwort);
         dbAdd.personAnlegen(req.body.nutzername, passwort, req.body.vorname, req.body.nachname, req.body.telefon, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
-        res.redirect("/login");
+        res.render("login.ejs");
     }
     catch {
         console.log("Fehler");
-        res.redirect("/errorpage");
+        res.render("errorpage.ejs");
     }
   });
 
 //-------------------------------------------------------------------------
 
-/*app.get("/index", (req, res) => {
-  res.render("index.ejs");
-});*/
+app.get("/index", (req, res) => {
+  req.session.success = false;
+  res.render("login.ejs");
+});
 
 app.get("/einkaufen", (req, res) => {
   if(req.session.success !== true){
-    res.redirect("login");
+    res.render("login.ejs");
+    return;
   }
     res.render("einkaufen.ejs");
 });
 
 app.get("/empfangen", (req, res) => {
   if(req.session.success !== true){
-    res.redirect("login");
+    res.render("login.ejs");
+    return;
   }
     res.render("empfangen.ejs");
 });
@@ -86,21 +90,24 @@ app.get("/empfangen", (req, res) => {
 
 app.get("/grunden",  (req, res) => {
   if(req.session.success !== true){
-    res.redirect("login");
+    res.render("login.ejs");
+    return;
   }
     res.render("gründen.ejs");
 });
 
 app.get("/menu", (req, res) => {
   if(req.session.success !== true){
-    res.redirect("login");
+    res.render("login.ejs");
+    return;
   }
   res.render("menu.ejs");
 });
 
 app.get("/ansehen", async (req, res) => {
   if(req.session.success !== true){
-    res.redirect("login");
+    res.render("login.ejs");
+    return;
   }
     let gemeinden = await dbRead.getGemeinden();
     res.render("ansehen.ejs", {gemeinden});
@@ -108,24 +115,24 @@ app.get("/ansehen", async (req, res) => {
 
   app.post("/grunden", async (req, res) =>{
     if(req.session.success !== true){
-      res.redirect("login");
+      res.render("login.ejs");
+      return;
     }
     try{
       dbAdd.gemeindeAnlegen(req.body.bezeichnung, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
         console.log("Gemeinschaft wurde angelegt.");
-        res.redirect("/menu");
+        res.render("menu.ejs");
     }
     catch {
         console.log("Fehler");
-        res.redirect("/errorpage");
+        res.render("errorpage.ejs");
     }
   });
 
   app.get("/logout", (req, res) => {
     req.session.destroy();
-    res.redirect("login");
+    res.render("login.ejs");
   });
-
 
 //---------------------------------------------------------------
 
