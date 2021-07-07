@@ -1,48 +1,39 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrieren</title>
-</head>
-<body>
+<%- include("header") -%>
 
-  <h1>Registrieren</h1>
+<h1>Registrieren</h1>
 
-  <form action=/register method="POST">
+<form action=/register method="POST">
 
-    <label for="nutzername">Nutzername</label>
-    <input type="text" id="nutzername" name="nutzername" required><br><br>
+<label for="nutzername">Nutzername</label>
+<input type="text" id="nutzername" name="nutzername" required><br><br>
 
-    <label for="passwort">Passwort</label>
-    <input type="password" id="passwort" name="passwort" required><br><br>
+<label for="passwort">Passwort</label>
+<input type="password" id="passwort" name="passwort" required><br><br>
 
-    <label for="vorname">Vorname</label>
-    <input type="text" id="vorname" name="vorname" required><br><br>
+<label for="vorname">Vorname</label>
+<input type="text" id="vorname" name="vorname" required><br><br>
 
-    <label for="nachname">Nachname</label>
-    <input type="text" id="nachname" name="nachname" required><br><br>
+<label for="nachname">Nachname</label>
+<input type="text" id="nachname" name="nachname" required><br><br>
 
-    <label for="ortsname">Wohnort</label>
-    <input type="text" id="ortsname" name="ortsname" required><br><br>
+<label for="ortsname">Wohnort</label>
+<input type="text" id="ortsname" name="ortsname" required><br><br>
 
-    <label for="plz">Postleitzahl</label>
-    <input type="text" id="plz" name="plz"><br><br>
+<label for="plz">Postleitzahl</label>
+<input type="text" id="plz" name="plz"><br><br>
 
-    <label for="strasse">Straße</label>
-    <input type="text" id="strasse" name="strasse"><br><br>
+<label for="strasse">Straße</label>
+<input type="text" id="strasse" name="strasse"><br><br>
 
-    <label for="hausnr">Hausnummer</label>
-    <input type="text" id="hausnr" name="hausnr"><br><br>
+<label for="hausnr">Hausnummer</label>
+<input type="text" id="hausnr" name="hausnr"><br><br>
 
-    <label for="telefon">Telefonnummer</label>
-    <input type="text" id="telefon" name="telefon"><br><br>
+<label for="telefon">Telefonnummer</label>
+<input type="text" id="telefon" name="telefon"><br><br>
 
-    <input type="submit" value="Registrieren"><br><br>
-  </form>
+<input type="submit" value="Registrieren"><br><br>
+</form>
 
 <a href="/login">Bereits registriert? Hier zum Login</a>
 
-</body>
-</html>
+<%- include("footer") -%>

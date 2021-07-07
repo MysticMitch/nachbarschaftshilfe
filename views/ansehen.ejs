@@ -1,27 +1,26 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemeinschaft ansehen</title>
-</head>
-<body>
+<%- include("header") -%>
 
-    <h1>Alle Gemeinschaften ansehen</h1>
+<h1>Alle Gemeinschaften ansehen</h1>
 
-    <p>Anzahl Gemeinden: <% gemeinden.length %> </p>
+<% for(var i=0; i < gemeinden.length; i++) { %>
 
-        <% for(var i=0; i < gemeinden.length; i++) { %>
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+        <img src="/public/house-icon.png" class="card-img-top" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text"><%= gemeinden[i].Bezeichnung %> <%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></p>
+              <form method="POST" action="beitreten"><button name=auswahl value=<%=i%> class="btn btn-primary">Beitreten</button></form>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+<% } %>
 
-            <ul>  
-            <li> <%=i+1%> <%= gemeinden[i].Bezeichnung %> , Mitglieder: <%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></li><br><br>
-            </ul>
-            <form method="POST" action="beitreten">
-                <input type="submit" name=beitreten<%=i%> value=Beitreten>
-            </form>
-            <% } %>
-      
+<br><br>
 
-</body>
-</html>
+<%- include("footer") -%>

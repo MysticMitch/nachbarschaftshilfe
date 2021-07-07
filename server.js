@@ -5,18 +5,16 @@ const logger = require("./logger");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-
 const dbRead = require("./database/databaseRead.js");
 const dbAdd = require("./database/databaseAdd.js");
-//const { response } = require("express");
-//const dbEdit = require("./database/databaseEdit.js");
   
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
+app.use("/public", express.static("./public")); //EJS Bilder laden
 app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
 app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
-
 //app.use(logger); 
+
 
 app.get("/", function(req,res){req.session.success=false; res.render("login.ejs");});
 
@@ -62,6 +60,11 @@ app.post("/register", async (req, res) =>{
         console.log("Fehler");
         res.render("errorpage.ejs");
     }
+  });
+
+  app.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.render("login.ejs");
   });
 
 //-------------------------------------------------------------------------
@@ -129,11 +132,6 @@ app.get("/ansehen", async (req, res) => {
     }
   });
 
-  app.get("/logout", (req, res) => {
-    req.session.destroy();
-    res.render("login.ejs");
-  });
-
 //---------------------------------------------------------------
 
 app.get("/test", (req, res) => {
@@ -141,15 +139,10 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/beitreten", (req, res) => {
-let i = 0;
-let arr = [];
-while(i < 6){
-  arr.push(req.body[`beitreten${i}`]);
-  //arr.push(req.body.beitreten+i);
-  i++;
-}
-console.log(arr);
-res.render("test.ejs");
+
+console.log(req.body.auswahl);
+res.redirect("back");
+//res.render("menu.ejs");
 });
 
 

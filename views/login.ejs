@@ -1,26 +1,17 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
+<%- include("header") -%>
 
-    <h1>Login</h1>
+<h1>Login</h1>
 
-  <form action=/login method="POST">
-    <label for="nutzername">Nutzername</label>
-    <input type="text" id="nutzername" name="nutzername" required><br><br>
+<form action=/login method="POST">
+<label for="nutzername">Nutzername</label>
+<input type="text" id="nutzername" name="nutzername" required><br><br>
 
-    <label for="passwort">Passwort</label>
-    <input type="password" id="passwort" name="passwort" required><br><br>
+<label for="passwort">Passwort</label>
+<input type="password" id="passwort" name="passwort" required><br><br>
 
-    <input type="submit" value="Anmelden"><br><br>
-  </form>
+<input type="submit" value="Anmelden"><br><br>
+</form>
 
-  <a href="/register">Noch kein Account? Hier registrieren</a><br>
+<a href="/register">Noch kein Account? Hier registrieren</a><br>
 
-</body>
-</html>
+<%- include("footer") -%>
