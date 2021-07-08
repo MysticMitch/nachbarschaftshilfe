@@ -7,12 +7,12 @@
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
           <div class="col-md-4">
-        <img src="/public/house-icon.png" class="card-img-top" alt="...">
+        <img src="/public/house-icon.png" class="card-img-top" alt="..." style="max-height: 260px; max-width:310px;">
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text"><%= gemeinden[i].Bezeichnung %> <%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></p>
+              <h5 class="card-title"><%= gemeinden[i].Bezeichnung %></h5>
+              <p class="card-text"><%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></p>
               <form method="POST" action="beitreten"><button name=auswahl value=<%=i%> class="btn btn-primary">Beitreten</button></form>
             </div>
           </div>

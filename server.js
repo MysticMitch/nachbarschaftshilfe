@@ -139,10 +139,8 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/beitreten", (req, res) => {
-
 console.log(req.body.auswahl);
-res.redirect("back");
-//res.render("menu.ejs");
+res.render("menu.ejs");
 });
 
 
