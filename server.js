@@ -7,6 +7,7 @@ const app = express();
 
 const dbRead = require("./database/databaseRead.js");
 const dbAdd = require("./database/databaseAdd.js");
+const dbDelete = require("./database/databaseDelete.js");
   
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
@@ -120,14 +121,19 @@ app.get("/test", (req, res) => {
   res.render("test.ejs");
 });
 
-app.post("/beitreten", (req, res) => {
+app.post("/beitretenoderverlassen", (req, res) => {
 
-let idGemeinde = req.body.auswahl;
 let idPerson = req.session.idperson;
-dbAdd.addBeitritt(idPerson, idGemeinde);
+let idGemeinde;
 
-console.log("Gemeinde: " + idGemeinde);
-console.log("Person: " + idPerson);
+if(req.body.beitreten){
+  idGemeinde = req.body.beitreten;
+  dbAdd.addBeitritt(idPerson, idGemeinde);
+}else if(req.body.verlassen){
+  idGemeinde = req.body.verlassen;
+  dbDelete.deleteBeitritt(idPerson, idGemeinde);
+}
+
 res.render("menu.ejs");
 });
 
