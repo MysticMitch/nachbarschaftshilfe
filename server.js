@@ -75,52 +75,34 @@ app.get("/index", (req, res) => {
 });
 
 app.get("/einkaufen", (req, res) => {
-  if(req.session.success !== true){
-    res.render("login.ejs");
-    return;
-  }
+if(!checkSession(req,res)){return;}
     res.render("einkaufen.ejs");
 });
 
 app.get("/empfangen", (req, res) => {
-  if(req.session.success !== true){
-    res.render("login.ejs");
-    return;
-  }
+  if(!checkSession(req,res)){return;}
     res.render("empfangen.ejs");
 });
 
 
 app.get("/grunden",  (req, res) => {
-  if(req.session.success !== true){
-    res.render("login.ejs");
-    return;
-  }
+  if(!checkSession(req,res)){return;}
     res.render("gründen.ejs");
 });
 
 app.get("/menu", (req, res) => {
-  if(req.session.success !== true){
-    res.render("login.ejs");
-    return;
-  }
+  if(!checkSession(req,res)){return;}
   res.render("menu.ejs");
 });
 
-app.get("/ansehen", async (req, res) => {
-  if(req.session.success !== true){
-    res.render("login.ejs");
-    return;
-  }
+app.get("/gemeinden", async (req, res) => {
+  if(!checkSession(req,res)){return;}
     let gemeinden = await dbRead.getGemeinden();
-    res.render("ansehen.ejs", {gemeinden});
+    res.render("gemeinden.ejs", {gemeinden});
 });
 
   app.post("/grunden", async (req, res) =>{
-    if(req.session.success !== true){
-      res.render("login.ejs");
-      return;
-    }
+    if(!checkSession(req,res)){return;}
     try{
       dbAdd.gemeindeAnlegen(req.body.bezeichnung, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
         console.log("Gemeinschaft wurde angelegt.");
@@ -139,10 +121,24 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/beitreten", (req, res) => {
-console.log(req.body.auswahl);
+
+let idGemeinde = req.body.auswahl;
+let idPerson = req.session.idperson;
+dbAdd.addBeitritt(idPerson, idGemeinde);
+
+console.log("Gemeinde: " + idGemeinde);
+console.log("Person: " + idPerson);
 res.render("menu.ejs");
 });
 
+
+function checkSession(req, res){
+  if(req.session.success !== true){
+    res.render("login.ejs");
+    return false;
+  }
+  return true;
+}
 
 
 

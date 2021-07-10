@@ -13,7 +13,7 @@
             <div class="card-body">
               <h5 class="card-title"><%= gemeinden[i].Bezeichnung %></h5>
               <p class="card-text"><%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></p>
-              <form method="POST" action="beitreten"><button name=auswahl value=<%=i%> class="btn btn-primary">Beitreten</button></form>
+              <form method="POST" action="beitreten"><button name=auswahl value=<%=gemeinden[i].idGemeinde%> class="btn btn-primary">Beitreten</button></form>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
       connection.query("SELECT * FROM beigetreten WHERE fkPerson = ? AND fkGemeinde = ?;", [idPerson, idGemeinde], function (err, result) {
         if (err){console.log("Fehler beim Vergleich aufgetreten, ob Person bereits in der Gemeinde ist.");return false;}
         if(result.length > 0){
-          console.log("Person exisiert bereits in der Gemeinde. Konnte daher nicht beitreten.");
+          console.log("Person exisiert bereits in der Gemeinde. Konnte nicht beitreten.");
           return false;
         } else {
           connection.query("INSERT INTO beigetreten VALUES (?, ?, ?);", [idPerson, idGemeinde, datum], function (err, result) {
@@ -44,7 +44,8 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   }
   
     function addWohnsitz(ortsname, postleitzahl, straße, hausnummer){
-      connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, postleitzahl, straße, hausnummer], function (err, result) {
+
+      connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, makeNull(postleitzahl), makeNull(straße), makeNull(hausnummer)], function (err, result) {
         if (err){console.log("Fehler beim Einfügen eines Wohnsitzes aufgetreten.");return false;}
         console.log("Wohnsitz wurde hinzugefügt.");
         return true;
@@ -75,7 +76,7 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   
     function addPerson(fkWohnsitz, nutzername, passwort, vorname, nachname, telefon){
       
-    connection.query("INSERT INTO person VALUES (default, ?, ?, ?, ?, ?, ?, 0);", [fkWohnsitz, nutzername, passwort, vorname, nachname, telefon], function (err, result) {
+    connection.query("INSERT INTO person VALUES (default, ?, ?, ?, ?, ?, ?, 0);", [fkWohnsitz, nutzername, passwort, vorname, nachname, makeNull(telefon)], function (err, result) {
         if (err){console.log("Fehler beim Einfügen einer Person aufgetreten.");return false;}
         console.log("Person wurde hinzugefügt.");
         return true;
@@ -145,6 +146,15 @@ function personAnlegen(nutzername, passwort, vorname, nachname, telefon, ortsnam
   existNutzername(nutzername, function(ergebnis){if(ergebnis === false){return;};addWohnsitz(ortsname, postleitzahl, straße, hausnummer);
   getWohnsitzPrimary(function(fkWohnsitz){console.log("FK für Person geholt: " + fkWohnsitz);addPerson(fkWohnsitz, nutzername, passwort, vorname, nachname, telefon);});
   });
+}
+
+//Leere Eingabe gibte ein "" oder undefined
+function makeNull(input){
+
+  if(input === "" || input === undefined){
+    input = null;
+  }
+  return input;
 }
 
 module.exports.gemeindeAnlegen = gemeindeAnlegen;
