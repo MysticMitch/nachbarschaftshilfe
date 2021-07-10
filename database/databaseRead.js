@@ -7,7 +7,6 @@ let connection = require("./connection.js");
 connection = connection.connection; //Modul.Methode
 
   function getPassword(nutzername){
-    
     return new Promise((resolve, reject) => {
         connection.query("SELECT passwort FROM person WHERE nutzername= ?;", [nutzername], function (err, result) {
           if (err){return resolve("");}
@@ -22,7 +21,6 @@ connection = connection.connection; //Modul.Methode
   }
 
   function getGemeinden(){
-    
     return new Promise((resolve, reject) => {
         connection.query("SELECT * FROM gemeinde;", function (err, result) {
           if (err){return resolve("");}
@@ -38,7 +36,6 @@ connection = connection.connection; //Modul.Methode
   }
 
   function getGemeinden(){
-    
     return new Promise((resolve, reject) => {
         connection.query("SELECT * from gemeinde, wohnsitz WHERE gemeinde.fkWohnsitz = wohnsitz.idWohnsitz;", function (err, result) {
           if (err){return resolve("");}
