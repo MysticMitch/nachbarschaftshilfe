@@ -33,14 +33,18 @@ app.get("/logout", (req, res) => {
   res.render("login.ejs");
 });
 
+app.get("/profil", (req, res) => {
+  res.render("profil.ejs");
+});
+
 app.get("/test", (req, res) => {
   res.render("test.ejs");
   });
 
-app.get("/index", (req, res) => {
+/*app.get("/index", (req, res) => {
 req.session.success = false;
 res.render("login.ejs");
-});
+});*/
 
 app.get("/einkaufen", (req, res) => {
 if(!checkSession(req,res)){return;}
