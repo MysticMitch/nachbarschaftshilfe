@@ -4,7 +4,8 @@
     <script>     
     let x = document.getElementsByTagName("h1")[0].textContent;
     if(x === "Login" || x == "Registrieren"){
-    document.getElementById("logoutButton").style.display = "none";
+     document.getElementsByTagName("form")[0].style.display = "none";
+     document.getElementsByTagName("form")[1].style.display = "none";
     }
     </script>
 

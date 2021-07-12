@@ -16,7 +16,10 @@ app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
 app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
 //app.use(logger); 
 
-app.get("/", function(req,res){req.session.success=false; res.render("login.ejs");});
+app.get("/", (req, res) => {
+  req.session.success = false;
+  res.render("login.ejs");
+  });
 
 app.get("/login", (req, res) => {
 req.session.success = false;
@@ -34,17 +37,9 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/profil", (req, res) => {
+  if(!checkSession(req,res)){return;}
   res.render("profil.ejs");
 });
-
-app.get("/test", (req, res) => {
-  res.render("test.ejs");
-  });
-
-/*app.get("/index", (req, res) => {
-req.session.success = false;
-res.render("login.ejs");
-});*/
 
 app.get("/einkaufen", (req, res) => {
 if(!checkSession(req,res)){return;}
@@ -72,6 +67,10 @@ if(!checkSession(req,res)){return;}
   let gemeinden = await dbRead.getGemeinden();
   res.render("gemeinden.ejs", {gemeinden});
 });
+
+app.get("/test", (req, res) => {
+  res.render("test.ejs");
+  });
 
 //Falsche GET Requests führen zu Login
 app.get("*", (req, res) => {
