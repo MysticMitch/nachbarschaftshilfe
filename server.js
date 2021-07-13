@@ -136,6 +136,14 @@ app.post("/beitretenoderverlassen", (req, res) => {
   res.render("menu.ejs");
   });
 
+  app.post("/aufgeben", (req, res) => {
+
+    let x = req.body.bezeichnung;
+    console.log(x);
+    res.render("empfangen.ejs");
+
+    });
+
 //---------------------------------------------------------------
 
 

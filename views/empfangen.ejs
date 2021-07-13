@@ -1,5 +1,44 @@
 <%- include("header") -%>
 
-<h1>Produkte empfangen</h1>
+<h1>Einkaufsliste aufgeben</h1>
+
+<form action=/aufgeben name="eingabe" method="POST">
+
+    <div id="felder">
+    <b><label for="Bezeichnung">Produkt</label><br></b>
+    <input align="middle" type="text" name="bezeichnung" required><br><br>
+    
+    </b><label for="marke">Marke</label><br>
+    <input align="middle" type="text" name="marke"><br><br>
+    
+    <label for="menge">Menge</label><br>
+    <input type="text" name="menge"><br><br>
+    
+    <label for="kilogramm">Kilogramm</label><br>
+    <input type="text" name="kilogramm"><br><br>
+    
+    <label for="liter">Liter</label><br>
+    <input type="text" name="liter"><br><br></div>
+    
+    <div id="platzhalter1"></div>
+
+    <input type="submit" value="Einkaufsliste senden"></input>
+    <input type="button" onclick="addProduct()" value="Produkt hinzufügen"></input>
+    </form>
+    
+
+    <script>
+        let count = 1;
+        let felder = document.getElementById("felder");
+
+        function addProduct(){
+            let platzhalterCurrent = "platzhalter"+count;
+            let platzhalterNext = "<div id=\""+"platzhalter"+(count+1)+"\"></div>";
+            felder.innerHTML = felder.innerHTML + platzhalterNext;
+            document.getElementById(platzhalterCurrent).innerHTML = felder.innerHTML;
+            document.createElement("hr");
+            count++;
+        }
+    </script>
 
 <%- include("footer") -%>
