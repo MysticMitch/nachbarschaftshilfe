@@ -6,10 +6,10 @@
 
     <div id="felder">
     <b><label for="Bezeichnung">Produkt</label><br></b>
-    <input align="middle" type="text" name="bezeichnung" required><br><br>
+    <input type="text" name="bezeichnung" required><br><br>
     
     </b><label for="marke">Marke</label><br>
-    <input align="middle" type="text" name="marke"><br><br>
+    <input type="text" name="marke"><br><br>
     
     <label for="menge">Menge</label><br>
     <input type="text" name="menge"><br><br>
@@ -22,22 +22,41 @@
     
     <div id="platzhalter1"></div>
 
-    <input type="submit" value="Einkaufsliste senden"></input>
-    <input type="button" onclick="addProduct()" value="Produkt hinzufügen"></input>
+    <input type="button" class="btn btn-primary btn-sm" onclick="addProduct()" value="Produkt hinzufügen"></input>
+    <input type="button" class="btn btn-primary btn-sm" onclick="removeProduct()" value="Produkt entfernen"></input><br style="line-height: 40px"/>
+    <input type="submit" class="btn btn-primary btn-sm" value="Einkaufsliste senden"></input>
+    <input type="button" class="btn btn-primary btn-sm" onclick="resetAll()" value="Eingaben löschen"></input>
     </form>
-    
 
     <script>
         let count = 1;
         let felder = document.getElementById("felder");
+        let kopie;
 
         function addProduct(){
+            if(count <= 0){
+                count = 1;
+            }
             let platzhalterCurrent = "platzhalter"+count;
             let platzhalterNext = "<div id=\""+"platzhalter"+(count+1)+"\"></div>";
-            felder.innerHTML = felder.innerHTML + platzhalterNext;
-            document.getElementById(platzhalterCurrent).innerHTML = felder.innerHTML;
-            document.createElement("hr");
+            kopie = felder.innerHTML + platzhalterNext;
+            document.getElementById(platzhalterCurrent).innerHTML = kopie;
             count++;
+        }
+
+        function removeProduct(){
+            count--;
+            let s = "platzhalter"+count;
+            document.getElementById(s).innerHTML = "";
+        }
+
+        function resetAll(){
+            while(count>1){
+            removeProduct();
+            }
+            for(let i = 0; i < 5; i++){
+                document.getElementsByTagName("input")[i].value = "";
+            }
         }
     </script>
 

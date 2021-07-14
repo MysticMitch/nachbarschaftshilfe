@@ -139,8 +139,12 @@ app.post("/beitretenoderverlassen", (req, res) => {
   app.post("/aufgeben", (req, res) => {
 
     let x = req.body.bezeichnung;
+    let y = req.body.marke;
+    let z = req.body.menge;
     console.log(x);
-    res.render("empfangen.ejs");
+    console.log(y);
+    console.log(z);
+    res.render("menu.ejs");
 
     });
 
