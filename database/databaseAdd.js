@@ -38,8 +38,12 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
           connection.query("INSERT INTO beigetreten VALUES (?, ?, ?);", [idPerson, idGemeinde, datum], function (err, result) {
             if (err){console.log("Fehler beim Einfügen einer Person zu einer Gemeinde aufgetreten.");return false;}
             console.log("Person ist einer Gemeinde beigetreten.");
+            });
+          
+            //Fülle Tabelle beitreten mit den Einkaufslisten der Person zugehörig zur beigetretenen Gemeinde
+            getEinkaufslisten(idPerson, function(idEinkaufslisten){for(let i = 0; i < idEinkaufslisten.length; i++){addBesitzt(idGemeinde, idEinkaufslisten[i], idPerson)}});
             return true;
-            });}
+          }
     });
   }
   
@@ -51,7 +55,36 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
         return true;
         });
     }
+
+    //Holt alle (ID) Gemeinden in der die Person ist
+    function getGemeinden(idPerson, callback){
+      connection.query("SELECT fkGemeinde FROM beigetreten WHERE fkPerson = ?;", [idPerson], function (err, result) {
+        if (err){console.log("Fehler beim Auslesen der idGemeinden aufgetreten.");return false;}
+        let ergebnis = [];
+        for(let i = 0; i < result.length; i++){
+          ergebnis.push((Object.values(result[i])[0]));
+        }  
+      return callback(ergebnis);
+      });
+    }
+
+        //Holt alle (ID) Einkaufslisten die eine Person hat
+        function getEinkaufslisten(idPerson, callback){
+          connection.query("SELECT idEinkaufsliste FROM einkaufsliste WHERE idAusgeber = ?;", [idPerson], function (err, result) {
+            if (err){console.log("Fehler beim Auslesen der Einkaufslisten aufgetreten.");return false;}
+            let ergebnis = [];
+            for(let i = 0; i < result.length; i++){
+              ergebnis.push((Object.values(result[i])[0]));
+            }  
+          return callback(ergebnis);
+          });
+        }
   
+    function addBesitzt(idGemeinde, idEinkaufsliste, idAusgeber){
+      connection.query("INSERT INTO besitzt VALUES (?, ?, ?);", [idGemeinde, idEinkaufsliste, idAusgeber], function (err, result) {
+        if (err){console.log("Fehler beim Füllen der besitzt Tabelle aufgetreten.");return false;}
+      });
+    }
   
      function getWohnsitzPrimary(callback){
       let ergebnis = null;
@@ -66,7 +99,6 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   
 
     function addGemeinde(fkWohnsitz, bezeichnung){
-
       connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1, 0);", [fkWohnsitz, bezeichnung], function (err, result) {
       if (err){console.log("Fehler beim Einfügen der Gemeinde aufgetreten.");return false;}
       console.log("Gemeinde wurde hinzugefügt.");
@@ -75,7 +107,6 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
     }
   
     function addPerson(fkWohnsitz, nutzername, passwort, vorname, nachname, telefon){
-      
     connection.query("INSERT INTO person VALUES (default, ?, ?, ?, ?, ?, ?, 0);", [fkWohnsitz, nutzername, passwort, vorname, nachname, makeNull(telefon)], function (err, result) {
         if (err){console.log("Fehler beim Einfügen einer Person aufgetreten.");return false;}
         console.log("Person wurde hinzugefügt.");
@@ -105,20 +136,20 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
     });
   }
   
-  function addEinkaufsliste(idAusgeber, idGemeinde){
+  function addEinkaufsliste(idAusgeber){
     let datum = new Date();
     let bearbeiter = null;
   
-    connection.query("INSERT INTO einkaufsliste VALUES (default, ?, ?, ?, ?, 0, 0);", [idGemeinde, idAusgeber, bearbeiter, datum], function (err, result) {
+    connection.query("INSERT INTO einkaufsliste VALUES (default, ?, ?, ?, 0, 0);", [idAusgeber, bearbeiter, datum], function (err, result) {
       if (err){console.log("Fehler beim Einfügen einer Einkaufsliste aufgetreten.");return false;}
       console.log("Einkaufsliste wurde hinzugefügt.");
       return true;
       });
   }
   
-function addProdukt(idListe, bezeichnung, marke, menge, kilogramm, liter, preis){
-    connection.query("INSERT INTO produkt VALUES (default, ?, ?, ?, ?, ?, ?, ?);", [idListe, bezeichnung, marke, menge, kilogramm, liter, preis], function (err, result) {
-      if (err){console.log("Fehler beim Einfügen von Produkten aufgetreten.");console.log(err);return false;}
+function addProdukt(idEinkaufsliste, bezeichnung, marke, menge, kilogramm, liter, preis){
+    connection.query("INSERT INTO produkt VALUES (default, ?, ?, ?, ?, ?, ?, ?);", [idEinkaufsliste, bezeichnung, marke, menge, kilogramm, liter, makeNull(preis)], function (err, result) {
+      if (err){console.log("Fehler beim Einfügen von Produkten aufgetreten.");return false;}
       console.log("Produkt wurde hinzugefügt");
       return true;
       });
@@ -136,10 +167,13 @@ function gemeindeAnlegen(bezeichnung, ortsname, postleitzahl, straße, hausnumme
 }
 
 //Produkte ist ein Array das alle Produkte enthält die mit der Einkaufsliste angelegt werden
-function einkaufslisteAnlegen(idAusgeber, idGemeinde, produkte){
-  addEinkaufsliste(idAusgeber, idGemeinde);
-  getEinkaufslistePrimary(function(fkEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(fkEinkaufsliste, produkte[i].bezeichnung, produkte[i].marke, produkte[i].menge, produkte[i].kilogramm, produkte[i].liter, produkte[i].preis);}})
-}
+//Achtung, Callback Funktion geht weiter als erste Zeile
+function einkaufslisteAnlegen(idAusgeber, produkte){
+  addEinkaufsliste(idAusgeber);
+  getEinkaufslistePrimary(function(fkEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(fkEinkaufsliste, produkte[i].bezeichnung, produkte[i].marke, produkte[i].menge, produkte[i].kilogramm, produkte[i].liter);}
+  getGemeinden(idAusgeber, function(arrayGemeinden){for(let j = 0; j < arrayGemeinden.length; j++){addBesitzt(arrayGemeinden[j], fkEinkaufsliste, idAusgeber);}});
+  });
+  }
 
 //Achtung, Callback Funktion geht weiter als erste Zeile
 function personAnlegen(nutzername, passwort, vorname, nachname, telefon, ortsname, postleitzahl, straße, hausnummer){

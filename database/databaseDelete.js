@@ -25,6 +25,14 @@ function deleteBeitritt(idPerson, idGemeinde){
   });
 }
 
+//Löscht eine Relation zwischen Einkaufsliste & Gemeinde, bzw Daten aus besitzt Tabelle
+function deleteBesitzt(idAusgeber, idGemeinde){
+  connection.query("DELETE FROM besitzt WHERE fkAusgeber = ? AND fkGemeinde = ?;", [idAusgeber, idGemeinde], function (err, result) {
+    if (err){console.log("Fehler beim Löschen von Einkaufslisten aus besitzt Tabelle.");return false;}
+    });
+    return true;
+}
 
 
 module.exports.deleteBeitritt = deleteBeitritt;
+module.exports.deleteBesitzt = deleteBesitzt;

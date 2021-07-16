@@ -132,20 +132,30 @@ app.post("/beitretenoderverlassen", (req, res) => {
   dbAdd.addBeitritt(req.session.idperson, req.body.beitreten);
   }else if(req.body.verlassen){
   dbDelete.deleteBeitritt(req.session.idperson, req.body.verlassen);
+  dbDelete.deleteBesitzt(req.session.idperson, req.body.verlassen);
   }
   res.render("menu.ejs");
   });
 
   app.post("/aufgeben", (req, res) => {
+    let bezeichnungen = req.body.bezeichnung;
+    let marken = req.body.marke;
+    let mengen = req.body.menge;
+    let kilogramm = req.body.kilogramm;
+    let liter = req.body.liter;
+    let produkte = [];
 
-    let x = req.body.bezeichnung;
-    let y = req.body.marke;
-    let z = req.body.menge;
-    console.log(x);
-    console.log(y);
-    console.log(z);
+    //bezeichnungen ist string wenn nur ein Produkt, ein object wenn mehrere Produkte
+    if(typeof bezeichnungen == "string"){
+      let produkt = {bezeichnung:bezeichnungen, marke:marken, menge:mengen, kilogramm:kilogramm, liter:liter};
+      produkte.push(produkt);
+    }else{
+    for(let i = 0; i < bezeichnungen.length; i++){
+      let produkt = {bezeichnung:bezeichnungen[i], marke:marken[i], menge:mengen[i], kilogramm:kilogramm[i], liter:liter[i]};
+      produkte.push(produkt);
+    }}
+    dbAdd.einkaufslisteAnlegen(req.session.idperson, produkte);
     res.render("menu.ejs");
-
     });
 
 //---------------------------------------------------------------
