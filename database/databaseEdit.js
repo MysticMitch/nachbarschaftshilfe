@@ -8,7 +8,7 @@ let connection = require("./connection.js");
 connection = connection.connection; //Modul.Methode
 
 function updateBearbeiter(idEinkaufsliste, idBearbeiter){
-    connection.query("UPDATE einkaufsliste SET idBearbeiter = ? WHERE idEinkaufsliste = ?;", [idBearbeiter, idEinkaufsliste], function (err, result) {
+    connection.query("UPDATE einkaufsliste SET id_bearbeiter = ? WHERE id_einkaufsliste = ?;", [idBearbeiter, idEinkaufsliste], function (err, result) {
         if (err){console.log("Fehler beim Ändern des Bearbeiters einer Einkaufsliste aufgetreten.");return false;}
         console.log("Bearbeiter wurde angepasst.");
         return true;

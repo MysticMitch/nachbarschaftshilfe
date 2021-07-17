@@ -104,7 +104,6 @@ app.post("/login", async (req, res) => {
     try{
         const salt = await bcrypt.genSalt(10);
         let passwort = await bcrypt.hash(req.body.passwort, salt);
-        console.log(passwort);
         dbAdd.personAnlegen(req.body.nutzername, passwort, req.body.vorname, req.body.nachname, req.body.telefon, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
         res.render("login.ejs");
     }
@@ -117,7 +116,7 @@ app.post("/login", async (req, res) => {
 app.post("/grunden", async (req, res) =>{
   if(!checkSession(req,res)){return;}
   try{
-    dbAdd.gemeindeAnlegen(req.body.bezeichnung, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
+    dbAdd.gemeindeAnlegen(req.session.idperson, req.body.bezeichnung, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr);
       console.log("Gemeinschaft wurde angelegt.");
       res.render("menu.ejs");
   }

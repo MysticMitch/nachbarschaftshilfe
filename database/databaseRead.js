@@ -37,7 +37,7 @@ connection = connection.connection; //Modul.Methode
 
   function getGemeinden(){
     return new Promise((resolve, reject) => {
-        connection.query("SELECT * from gemeinde, wohnsitz WHERE gemeinde.fkWohnsitz = wohnsitz.idWohnsitz;", function (err, result) {
+        connection.query("SELECT * from gemeinde, wohnsitz WHERE gemeinde.fk_wohnsitz = wohnsitz.id_wohnsitz;", function (err, result) {
           if (err){return resolve("");}
 
           if(result == ""){
@@ -55,7 +55,7 @@ connection = connection.connection; //Modul.Methode
   function getID(nutzername){
     
     return new Promise((resolve, reject) => {
-        connection.query("SELECT idPerson FROM person WHERE nutzername= ?;", [nutzername], function (err, result) {
+        connection.query("SELECT id_person FROM person WHERE nutzername = ?;", [nutzername], function (err, result) {
           if (err){return resolve("");}
 
           if(result == ""){
@@ -67,7 +67,20 @@ connection = connection.connection; //Modul.Methode
     });
   }
 
+  function getEinkaufslisten(idPerson){
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * from gemeinde, wohnsitz WHERE gemeinde.fk_wohnsitz = wohnsitz.id_wohnsitz;", function (err, result) {
+          if (err){return resolve("");}
 
+          if(result == ""){
+            console.log("Keine Gemeinden vorhanden.");
+            return resolve("");
+          }
+          //return resolve(Object.values(result));
+          return resolve(result);
+        });
+    });
+  }
 
 
 

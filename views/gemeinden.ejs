@@ -11,11 +11,11 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title"><%= gemeinden[i].Bezeichnung %></h5>
-              <p class="card-text"><%= gemeinden[i].Mitglieder %> <%= gemeinden[i].Kilometer%> <%= gemeinden[i].Ortsname%> <%= gemeinden[i].Postleitzahl%> <%= gemeinden[i].Strasse%> <%= gemeinden[i].Hausnummer%></p>
+              <h5 class="card-title"><%= gemeinden[i].bezeichnung %></h5>
+              <p class="card-text"><%= gemeinden[i].mitglieder %> <%= gemeinden[i].kilometer%> <%= gemeinden[i].ortsname%> <%= gemeinden[i].postleitzahl%> <%= gemeinden[i].strasse%> <%= gemeinden[i].hausnummer%></p>
               <form method="POST" action="beitretenoderverlassen">
-              <button name=beitreten value=<%=gemeinden[i].idGemeinde%> class="btn btn-primary">Beitreten</button>
-              <button name=verlassen value=<%=gemeinden[i].idGemeinde%> class="btn btn-primary">Verlassen</button>
+              <button name=beitreten value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Beitreten</button>
+              <button name=verlassen value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Verlassen</button>
             </form>
             </div>
           </div>
