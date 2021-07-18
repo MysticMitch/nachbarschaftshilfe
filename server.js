@@ -45,11 +45,9 @@ app.get("/einkaufen", async (req, res) => {
 if(!checkSession(req,res)){return;}
 
 let listen = await dbRead.getEinkaufslisten(req.session.idperson);
-
 console.log(listen);
-
-res.render("menu.ejs");  
-//res.render("einkaufen.ejs", {listen});
+console.log("Anzahl: " + listen.size);
+res.render("einkaufen.ejs", {listen});
 });
 
 app.get("/empfangen", (req, res) => {

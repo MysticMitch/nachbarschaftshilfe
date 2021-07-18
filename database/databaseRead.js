@@ -72,7 +72,7 @@ connection = connection.connection; //Modul.Methode
   function getEinkaufslisten(idPerson){
     
     return new Promise((resolve, reject) => {
-        connection.query("SELECT DISTINCT b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge  FROM produkt p, besitzt b WHERE p.fk_einkaufsliste IN (SELECT DISTINCT fk_einkaufsliste FROM besitzt, einkaufsliste WHERE fk_gemeinde IN (SELECT fk_gemeinde FROM beigetreten WHERE fk_person = ?));", [idPerson], function (err, result) {
+        connection.query("SELECT DISTINCT b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge  FROM produkt p, besitzt b WHERE p.fk_einkaufsliste IN (SELECT DISTINCT fk_einkaufsliste FROM besitzt, einkaufsliste WHERE einkaufsliste.bearbeitung < 1 AND fk_gemeinde IN (SELECT fk_gemeinde FROM beigetreten WHERE fk_person = 1));", [idPerson], function (err, result) {
           if (err){return resolve("");}
 
           if(result == ""){
@@ -87,12 +87,9 @@ connection = connection.connection; //Modul.Methode
     });
   }
 
-  async function verarbeiteEinkaufslisten(input){
+async function verarbeiteEinkaufslisten(input){
     
     let zuordnung = new Map();
-    let daten = [];
-
-    console.log("Länge: " + input.length);
 
     for(let i = 0; i < input.length; i++){
       let person = await getName(input[i].fk_ausgeber);
@@ -107,7 +104,6 @@ connection = connection.connection; //Modul.Methode
       if(zuordnung.has(input[i].fk_einkaufsliste)){
         zuordnung.get(input[i].fk_einkaufsliste).push(singleValue);
       } else {
-        console.log("NEU ANLEGEN");
         values = [];
         values.push(singleValue);
         zuordnung.set(key, values);
@@ -117,22 +113,6 @@ connection = connection.connection; //Modul.Methode
     return zuordnung;
 
   }
-
-    /*function getGemeinden(){
-    return new Promise((resolve, reject) => {
-        connection.query("SELECT * from gemeinde, wohnsitz WHERE gemeinde.fk_wohnsitz = wohnsitz.id_wohnsitz;", function (err, result) {
-          if (err){return resolve("");}
-
-          if(result == ""){
-            console.log("Keine Gemeinden vorhanden.");
-            return resolve("");
-          }
-          //return resolve(Object.values(result));
-          return resolve(result);
-        });
-    });
-  }*/
-
 
 
   module.exports.getID = getID;
