@@ -3,4 +3,14 @@
 <h1>Einkaufen gehen</h1>
 
 
+<ul>
+
+<% for(let i = 0; i < listen.length; i++){ %>
+    <li><%=listen[i].fk_gemeinde%></li>
+}
+
+
+
+</ul>
+
 <%- include("footer") -%>

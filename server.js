@@ -41,16 +41,21 @@ app.get("/profil", (req, res) => {
   res.render("profil.ejs");
 });
 
-app.get("/einkaufen", (req, res) => {
+app.get("/einkaufen", async (req, res) => {
 if(!checkSession(req,res)){return;}
-  res.render("einkaufen.ejs");
+
+let listen = await dbRead.getEinkaufslisten(req.session.idperson);
+
+console.log(listen);
+
+res.render("menu.ejs");  
+//res.render("einkaufen.ejs", {listen});
 });
 
 app.get("/empfangen", (req, res) => {
 if(!checkSession(req,res)){return;}
   res.render("empfangen.ejs");
 });
-
 
 app.get("/grunden",  (req, res) => {
 if(!checkSession(req,res)){return;}
