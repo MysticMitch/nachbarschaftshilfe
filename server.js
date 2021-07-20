@@ -43,6 +43,7 @@ app.get("/profil", (req, res) => {
 
 app.get("/einkaufen", async (req, res) => {
 if(!checkSession(req,res)){return;}
+console.log("ID " + req.session.idperson);
 let listen = await dbRead.getEinkaufslisten(req.session.idperson);
 console.log(listen);
 res.render("einkaufen.ejs", {listen});
