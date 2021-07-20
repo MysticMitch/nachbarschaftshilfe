@@ -22,7 +22,7 @@ connection = connection.connection; //Modul.Methode
 
    function getGemeinden(){
     return new Promise((resolve, reject) => {
-        connection.query("SELECT * FROM gemeinde;", function (err, result) {
+        connection.query("SELECT g.id_gemeinde, g.bezeichnung, g.mitglieder, g.heldenpunkte, w.ortsname, w.postleitzahl, w.strasse, w.hausnummer FROM gemeinde g, wohnsitz w;", function (err, result) {
           if (err){return resolve("");}
 
           if(result == ""){

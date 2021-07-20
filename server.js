@@ -43,7 +43,6 @@ app.get("/profil", (req, res) => {
 
 app.get("/einkaufen", async (req, res) => {
 if(!checkSession(req,res)){return;}
-
 let listen = await dbRead.getEinkaufslisten(req.session.idperson);
 console.log(listen);
 console.log("Anzahl: " + listen.size);
@@ -133,8 +132,8 @@ app.post("/beitretenoderverlassen", (req, res) => {
   if(req.body.beitreten){
   dbAdd.addBeitritt(req.session.idperson, req.body.beitreten);
   }else if(req.body.verlassen){
-  dbDelete.deleteBeitritt(req.session.idperson, req.body.verlassen);
-  dbDelete.deleteBesitzt(req.session.idperson, req.body.verlassen);
+  dbDelete.deleteBeitritt(req.session.idperson, req.body.verlassen, function(exists){if(!exists)return;
+  dbDelete.deleteBesitzt(req.session.idperson, req.body.verlassen)});
   }
   res.render("menu.ejs");
   });
