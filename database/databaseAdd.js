@@ -185,7 +185,7 @@ function gemeindeAnlegen(idPerson, bezeichnung, ortsname, postleitzahl, strasse,
 //Achtung, Callback Funktion geht weiter als erste Zeile
 function einkaufslisteAnlegen(idAusgeber, produkte){
   addEinkaufsliste(idAusgeber);
-  getEinkaufslistePrimary(function(idEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(idEinkaufsliste, produkte[i].bezeichnung, produkte[i].marke, produkte[i].menge, produkte[i].kilogramm, produkte[i].liter);}
+  getEinkaufslistePrimary(function(idEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(idEinkaufsliste, produkte[i].bezeichnung, makeNull(produkte[i].marke), makeNull(produkte[i].menge), makeNull(produkte[i].kilogramm), makeNull(produkte[i].liter));}
   getGemeinden(idAusgeber, function(arrayGemeinden){for(let j = 0; j < arrayGemeinden.length; j++){addBesitzt(arrayGemeinden[j], idEinkaufsliste, idAusgeber);}});
   console.log("Einkaufsliste wurde angelegt.");
   });

@@ -45,7 +45,6 @@ app.get("/einkaufen", async (req, res) => {
 if(!checkSession(req,res)){return;}
 let listen = await dbRead.getEinkaufslisten(req.session.idperson);
 console.log(listen);
-console.log("Anzahl: " + listen.size);
 res.render("einkaufen.ejs", {listen});
 });
 
@@ -74,7 +73,7 @@ app.get("/test", (req, res) => {
   res.render("test.ejs");
   });
 
-//Falsche GET Requests führen zu Login
+//Falsche GET Requests landen hier
 app.get("*", (req, res) => {
   if(!checkSession(req,res)){return;}
   res.render("menu.ejs");
@@ -156,6 +155,12 @@ app.post("/beitretenoderverlassen", (req, res) => {
       produkte.push(produkt);
     }}
     dbAdd.einkaufslisteAnlegen(req.session.idperson, produkte);
+    res.render("menu.ejs");
+    });
+
+    //Falsche POST Requests landen hier
+    app.post("*", (req, res) => {
+    if(!checkSession(req,res)){return;}
     res.render("menu.ejs");
     });
 

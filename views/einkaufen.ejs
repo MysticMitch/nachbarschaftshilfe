@@ -1,8 +1,46 @@
 <%- include("header") -%>
 
-<h1>Einkaufen gehen</h1>
+<h1>Alle Einkaufslisten</h1>
+
+<% for (let [key, values] of listen) { %>
+
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+        <img src="/public/index.png" class="card-img-top" alt="..." style="max-height: 260px; max-width:310px;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title"><%=values[0].name + " #" + key%></h5>
+
+              <ul>
+              <% for(let index = 0; index < values.length; index++){ %>
+                <% let produktzeile = ""; %>
+
+                
+              <% if(values[index].menge){produktzeile += values[index].menge + "x "}%>
+              <% produktzeile += values[index].bezeichnung%>
+              <% if(values[index].kilogramm){produktzeile += " (" + values[index].kilogramm + "kg) "}%>
+              <% if(values[index].liter){produktzeile += " (" + values[index].liter + "L) "}%>
+              <% if(values[index].marke){produktzeile += " von der Marke " + values[index].marke}%>  
 
 
-<h2><%=listen.size%></h2>
+              <li class="card-text"><%=produktzeile%></li>
+               
+
+              <% } %>   
+            </ul>
+
+              <form method="POST" action="aufnehmen">
+              <button name=aufnehmen value=<%=key%> class="btn btn-primary">Aufnehmen</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+<% } %>
+
+<br><br>
 
 <%- include("footer") -%>
