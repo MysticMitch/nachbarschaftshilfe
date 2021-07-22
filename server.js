@@ -8,6 +8,7 @@ const app = express();
 const dbRead = require("./database/databaseRead.js");
 const dbAdd = require("./database/databaseAdd.js");
 const dbDelete = require("./database/databaseDelete.js");
+const dbEdit = require("./database/databaseEdit.js");
 
 app.set("view-engine", "ejs");
 app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
@@ -113,6 +114,14 @@ app.post("/login", async (req, res) => {
         console.log("Fehler");
         res.render("errorpage.ejs");
     }
+  });
+
+  app.post("/aufnehmen", async (req, res) =>{
+    if(!checkSession(req,res)){return;}
+    
+    dbEdit.updateBearbeiter(req.body.liste, req.session.idperson);
+    res.render("menu.ejs");
+    
   });
 
 app.post("/grunden", async (req, res) =>{
