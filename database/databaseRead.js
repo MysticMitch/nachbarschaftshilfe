@@ -68,6 +68,21 @@ connection = connection.connection; //Modul.Methode
     });
   }
 
+  function getPerson(idPerson){
+    
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT nutzername, vorname, nachname, telefonnummer, heldenpunkte, ortsname, postleitzahl, strasse, hausnummer FROM person, wohnsitz WHERE person.id_person = ? AND wohnsitz.id_wohnsitz = person.fk_wohnsitz;", [idPerson], function (err, result) {
+          if (err){return resolve("");}
+
+          if(result == ""){
+            console.log("Nutzer nicht in der Datenbank vorhanden.");
+            return resolve("");
+          }
+          return resolve(Object.values(result[0]));
+        });
+    });
+  }
+
 
   function getEinkaufslisten(idPerson){
     
@@ -116,6 +131,7 @@ async function verarbeiteEinkaufslisten(input){
 
 
   module.exports.getID = getID;
+  module.exports.getPerson = getPerson;
   module.exports.getPassword = getPassword;
   module.exports.getGemeinden = getGemeinden;
   module.exports.getEinkaufslisten = getEinkaufslisten;

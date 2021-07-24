@@ -37,16 +37,16 @@ app.get("/logout", (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/profil", (req, res) => {
+app.get("/profil", async (req, res) => {
   if(!checkSession(req,res)){return;}
-  res.render("profil.ejs");
+  let daten = await dbRead.getPerson(req.session.idperson);
+  console.log(daten);
+  res.render("profil.ejs", {daten});
 });
 
 app.get("/einkaufen", async (req, res) => {
 if(!checkSession(req,res)){return;}
-console.log("ID " + req.session.idperson);
 let listen = await dbRead.getEinkaufslisten(req.session.idperson);
-console.log(listen);
 res.render("einkaufen.ejs", {listen});
 });
 
@@ -118,10 +118,8 @@ app.post("/login", async (req, res) => {
 
   app.post("/aufnehmen", async (req, res) =>{
     if(!checkSession(req,res)){return;}
-    
     dbEdit.updateBearbeiter(req.body.liste, req.session.idperson);
     res.render("menu.ejs");
-    
   });
 
 app.post("/grunden", async (req, res) =>{
@@ -168,11 +166,22 @@ app.post("/beitretenoderverlassen", (req, res) => {
     res.render("menu.ejs");
     });
 
+    
+    app.post("/profil", (req, res) => {
+      if(!checkSession(req,res)){return;}
+      console.log(req.body.anpassen);
+      if(req.body.anpassen){
+      res.render("anpassung.ejs");
+      }else if(req.body.ehrenhalle){
+        res.render("ehrenhalle.ejs");
+      }});
+
     //Falsche POST Requests landen hier
     app.post("*", (req, res) => {
     if(!checkSession(req,res)){return;}
     res.render("menu.ejs");
     });
+
 
 //---------------------------------------------------------------
 

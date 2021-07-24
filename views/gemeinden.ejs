@@ -4,24 +4,24 @@
 
 <% for(var i=0; i < gemeinden.length; i++) { %>
 
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-md-4">
-        <img src="/public/house-icon.png" class="card-img-top" alt="..." style="max-height: 260px; max-width:310px;">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title"><%=gemeinden[i].bezeichnung%></h5>
-              <p class="card-text"><%=gemeinden[i].mitglieder%> <%=gemeinden[i].heldenpunkte%> <%=gemeinden[i].ortsname%> <%=gemeinden[i].postleitzahl%> <%=gemeinden[i].strasse%> <%=gemeinden[i].hausnummer%></p>
-              <form method="POST" action="beitretenoderverlassen">
-              <button name=beitreten value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Beitreten</button>
-              <button name=verlassen value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Verlassen</button>
-            </form>
-            </div>
-          </div>
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+    <img src="/public/house-icon.png" class="card-img-top" alt="..." style="max-height: 260px; max-width:310px;">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%=gemeinden[i].bezeichnung%></h5>
+          <p class="card-text"><%=gemeinden[i].mitglieder%> <%=gemeinden[i].heldenpunkte%> <%=gemeinden[i].ortsname%> <%=gemeinden[i].postleitzahl%> <%=gemeinden[i].strasse%> <%=gemeinden[i].hausnummer%></p>
+          <form method="POST" action="beitretenoderverlassen">
+          <button name=beitreten value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Beitreten</button>
+          <button name=verlassen value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Verlassen</button>
+        </form>
         </div>
       </div>
-    
+    </div>
+  </div>
+
 <% } %>
 
 <br><br>

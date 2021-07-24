@@ -2,6 +2,7 @@
 
 <h1>Alle Einkaufslisten</h1>
 
+<% let produktzeile = ""; %>
 <% for (let [key, values] of listen) { %>
 
     <div class="card mb-3" style="max-width: 540px;">
@@ -15,7 +16,7 @@
 
               <ul>
               <% for(let index = 0; index < values.length; index++){ %>
-                <% let produktzeile = ""; %>
+                <% produktzeile = ""; %>
 
                 
               <% if(values[index].menge){produktzeile += values[index].menge + "x "}%>
@@ -26,10 +27,12 @@
 
 
               <li class="card-text"><%=produktzeile%></li>
+              
                
 
               <% } %>   
             </ul>
+
 
               <form method="POST" action="aufnehmen">
               <button name=liste value=<%=key%> class="btn btn-primary">Aufnehmen</button>

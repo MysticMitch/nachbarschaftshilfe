@@ -1,6 +1,36 @@
 <%- include("header") -%>
 
-<h1>Profil</h1>
+<h1>Mein Profil</h1>
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+    <img src="/public/user.png" class="card-img-top" alt="..." style="max-height: 260px; max-width:310px;">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%=daten[1] + " " + daten[2]%></h5>
+          <% let metadaten = ["Nutzername", "Vorname", "Nachname", "Telefonnr.", "Heldenpunkte", "Wohnort", "Postleitzahl", "Straße", "Hausnr."]; %>
+          <table style="width:100%">
+            <% for(let i = 0; i < daten.length; i++){ %>
+                
+                <%if(i == 1 || i == 2){
+                    continue;
+                }%>
+                <tr class="card-text">
+                    <th><%=metadaten[i]%></th>
+                    <th><%=daten[i]%></th>
+                  </tr>
+                  <% } %>
+          </table>
+          <form method="POST" action="profil">
+            <button name=anpassen value="Ok" class="btn btn-primary">Anpassen</button>
+            <button name=ehrenhalle value="Ok" class="btn btn-primary">Hall of Fame</button>
+          </form></div></div></div></div>
+
+
+
+
 
 
 <%- include("footer") -%>
