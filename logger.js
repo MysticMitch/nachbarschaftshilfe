@@ -4,4 +4,8 @@ const logger = (req, res, next) => {
     next();
 }
 
-module.exports = logger;
+//module.exports = logger;
+
+//So nutzbar:
+//const logger = require("./logger");
+//app.use(logger); 

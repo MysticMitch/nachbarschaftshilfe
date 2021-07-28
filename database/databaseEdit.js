@@ -1,11 +1,4 @@
-//Gemeinde editieren
-//Nutzer editieren
-//Einkaufsliste editieren
-//Einkaufsliste bearbeiten
-//Wohnsitz editieren
-
-let connection = require("./connection.js");
-connection = connection.connection; //Modul.Methode
+const connection = require("./connection.js").connection;
 
 function updateBearbeiter(idEinkaufsliste, idBearbeiter){
     connection.query("UPDATE einkaufsliste SET fk_bearbeiter = ?, bearbeitung = 1 WHERE id_einkaufsliste = ?;", [idBearbeiter, idEinkaufsliste], function (err, result) {

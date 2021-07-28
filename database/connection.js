@@ -1,15 +1,14 @@
 const mysql = require("mysql2");
-let cred = require("./credentials.js");
-cred = cred.daten; //Modul.Objekt
+const cred = require("./credentials.js");
+const daten = cred.daten; //Modul.Objekt
 
 const  connection = mysql.createConnection({
     host: cred.host,
-    user: cred.user,
-    password: cred.password,
-    database: cred.database
+    user: daten.user,
+    password: daten.password,
+    database: daten.database
   });
 
-  //Falls Datenbank nicht erreichbar ist
   connection.on("error", function(err) {
     console.log("Verbindung zur Datenbank fehlgeschlagen.");
   });

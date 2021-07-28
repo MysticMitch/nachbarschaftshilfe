@@ -1,6 +1,9 @@
-function checkSession(session) {
-  if (session.success === true) {
-    return true;
+function checkSession(req, res){
+  if(req.session.success !== true){
+    res.render("login.ejs");
+    return false;
   }
-  return false;
-}
+  return true;
+  }
+
+  module.exports.checkSession = checkSession;

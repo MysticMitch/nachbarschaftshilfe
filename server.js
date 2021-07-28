@@ -1,21 +1,31 @@
-const express = require("express");
+const checkSession = require("./checkSession").checkSession;
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
-const logger = require("./logger");
-const PORT = process.env.PORT || 5000;
+const express = require("express");
 const app = express();
+const port = 5000;
 
 const dbRead = require("./database/databaseRead.js");
 const dbAdd = require("./database/databaseAdd.js");
 const dbDelete = require("./database/databaseDelete.js");
 const dbEdit = require("./database/databaseEdit.js");
 
+//EJS wird genutzt
 app.set("view-engine", "ejs");
-app.listen(PORT, () => console.log("Server läuft auf Port "+PORT));
-app.use("/public", express.static("./public")); //EJS Bilder laden
-app.use(express.urlencoded({extended:false})); //ermöglicht req.body.value
+
+//Auf Port hören
+app.listen(port, () => console.log("Server läuft auf Port "+port));
+
+//Public Ordner static enthält Bilder
+app.use("/public", express.static("./public")); 
+
+//Ermöglicht req.body.value
+app.use(express.urlencoded({extended:false}));
+
+//Session Standard Werte
 app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
-//app.use(logger); 
+
+//********************************************************************************//
 
 app.get("/", (req, res) => {
   req.session.success = false;
@@ -40,7 +50,6 @@ app.get("/logout", (req, res) => {
 app.get("/profil", async (req, res) => {
   if(!checkSession(req,res)){return;}
   let daten = await dbRead.getPerson(req.session.idperson);
-  console.log(daten);
   res.render("profil.ejs", {daten});
 });
 
@@ -81,7 +90,7 @@ app.get("*", (req, res) => {
   res.render("menu.ejs");
 });
 
-//-------------------------------------------------------------------------
+//********************************************************************************//
 
 app.post("/login", async (req, res) => {
   try {
@@ -169,7 +178,6 @@ app.post("/beitretenoderverlassen", (req, res) => {
     
     app.post("/profil", (req, res) => {
       if(!checkSession(req,res)){return;}
-      console.log(req.body.anpassen);
       if(req.body.anpassen){
       res.render("anpassung.ejs");
       }else if(req.body.ehrenhalle){
@@ -181,15 +189,3 @@ app.post("/beitretenoderverlassen", (req, res) => {
     if(!checkSession(req,res)){return;}
     res.render("menu.ejs");
     });
-
-
-//---------------------------------------------------------------
-
-
-function checkSession(req, res){
-if(req.session.success !== true){
-  res.render("login.ejs");
-  return false;
-}
-return true;
-}

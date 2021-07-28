@@ -1,11 +1,4 @@
-//Gemeinde einfügen
-//Nutzer einfügen
-//Wohnsitz einfügen
-//Einkaufsliste einfügen
-//Gemeinde beitreten
-
-let connection = require("./connection.js");
-connection = connection.connection; //Modul.Methode
+const connection = require("./connection.js").connection;
 
 /*Frontend leere Eingaben abfangen:
 Im Frontend versuchen abzufangen
@@ -15,10 +8,7 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   function getEinkaufslistePrimary(callback){
     let ergebnis = null;
       connection.query("SELECT max(id_einkaufsliste) FROM einkaufsliste;", function (err, result) {
-        //Schlägt eig nie fehl, falls aber, dann wird nur Liste ohne Produkte angelegt
-        //callback(ergebnis) wenn null ist nicht gut, wie in anderen Methoden, zumindest sieht man in der DB die Fehler
         if (err){console.log("Fehler beim Auslesen von Primärschlüssel von Einkaufsliste aufgetreten.");return callback(ergebnis);}
-  
         ergebnis = (Object.values(result[0])[0]);
         console.log("Max ID von Einkaufsliste ist: " + ergebnis);
         return callback(ergebnis);
@@ -48,7 +38,6 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   }
   
     function addWohnsitz(ortsname, postleitzahl, strasse, hausnummer){
-
       connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, makeNull(postleitzahl), makeNull(strasse), makeNull(hausnummer)], function (err, result) {
         if (err){console.log("Fehler beim Einfügen eines Wohnsitzes aufgetreten.");return false;}
         console.log("Wohnsitz wurde hinzugefügt.");
@@ -68,8 +57,8 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
       });
     }
 
-        //Holt alle (ID) Einkaufslisten die eine Person hat
-        function getEinkaufslisten(idPerson, callback){
+    //Holt alle (ID) Einkaufslisten die eine Person hat
+    function getEinkaufslisten(idPerson, callback){
           connection.query("SELECT id_einkaufsliste FROM einkaufsliste WHERE fk_ausgeber = ?;", [idPerson], function (err, result) {
             if (err){console.log("Fehler beim Auslesen der Einkaufslisten aufgetreten.");return false;}
             let ergebnis = [];
@@ -160,16 +149,12 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   }
   
 function addProdukt(idEinkaufsliste, bezeichnung, marke, menge, kilogramm, liter){
-    connection.query("INSERT INTO produkt VALUES (default, ?, ?, ?, ?, ?, ?);", [idEinkaufsliste, bezeichnung, marke, menge, kilogramm, liter], function (err, result) {
+    connection.query("INSERT INTO produkt VALUES (default, ?, ?, ?, ?, ?, ?);", [idEinkaufsliste, bezeichnung, makeNull(marke), makeNull(menge), makeNull(kilogramm), makeNull(liter)], function (err, result) {
       if (err){console.log("Fehler beim Einfügen von Produkten aufgetreten.");return false;}
       console.log("Produkt wurde hinzugefügt");
       return true;
       });
   }
-
-//Gemeinde erstellen (+Wohnsitz)
-//Nutzer erstellen (+Wohnsitz)
-//Einkaufsliste erstellen (+Produkte)
 
 //Wohnsitz anlegen, dessen Primärschlüssel holen, Gemeinde anlegen mit fkWohnsitz
 function gemeindeAnlegen(idPerson, bezeichnung, ortsname, postleitzahl, strasse, hausnummer){
@@ -185,7 +170,7 @@ function gemeindeAnlegen(idPerson, bezeichnung, ortsname, postleitzahl, strasse,
 //Achtung, Callback Funktion geht weiter als erste Zeile
 function einkaufslisteAnlegen(idAusgeber, produkte){
   addEinkaufsliste(idAusgeber);
-  getEinkaufslistePrimary(function(idEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(idEinkaufsliste, produkte[i].bezeichnung, makeNull(produkte[i].marke), makeNull(produkte[i].menge), makeNull(produkte[i].kilogramm), makeNull(produkte[i].liter));}
+  getEinkaufslistePrimary(function(idEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(idEinkaufsliste, produkte[i].bezeichnung, produkte[i].marke, produkte[i].menge, produkte[i].kilogramm, produkte[i].liter);}
   getGemeinden(idAusgeber, function(arrayGemeinden){for(let j = 0; j < arrayGemeinden.length; j++){addBesitzt(arrayGemeinden[j], idEinkaufsliste, idAusgeber);}});
   console.log("Einkaufsliste wurde angelegt.");
   });
@@ -200,10 +185,7 @@ function personAnlegen(nutzername, passwort, vorname, nachname, telefon, ortsnam
 
 //Leere Eingabe gibte ein "" oder undefined
 function makeNull(input){
-
-  if(input === "" || input === undefined){
-    input = null;
-  }
+  if(input === "" || input === undefined){input = null;}
   return input;
 }
 
