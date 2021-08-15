@@ -1,7 +1,8 @@
 <%- include("header") -%>
 
-<h1>Alle Gemeinschaften ansehen</h1>
+<h1>Gemeinschaften ansehen</h1>
 
+<% let ausgabezeile = ""; %>
 <% for(var i=0; i < gemeinden.length; i++) { %>
 
 <div class="card mb-3" style="max-width: 540px;">
@@ -12,7 +13,16 @@
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title"><%=gemeinden[i].bezeichnung%></h5>
-          <p class="card-text"><%=gemeinden[i].mitglieder%> <%=gemeinden[i].heldenpunkte%> <%=gemeinden[i].ortsname%> <%=gemeinden[i].postleitzahl%> <%=gemeinden[i].strasse%> <%=gemeinden[i].hausnummer%></p>
+
+          <% ausgabezeile = ""; %>
+
+          <% if(gemeinden[i].mitglieder){ausgabezeile += "Mitglieder: " + gemeinden[i].mitglieder}%>
+          <% if(gemeinden[i].ortsname){ausgabezeile +=  ", " +  gemeinden[i].ortsname + " "}%>
+          <% if(gemeinden[i].postleitzahl){ausgabezeile += gemeinden[i].postleitzahl}%>
+          <% if(gemeinden[i].strasse){ausgabezeile += ", " + gemeinden[i].strasse + " "}%>
+          <% if(gemeinden[i].hausnummer){ausgabezeile += gemeinden[i].hausnummer}%>
+
+          <p class="card-text"><%=ausgabezeile%></p>
           <form method="POST" action="beitretenoderverlassen">
           <button name=beitreten value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Beitreten</button>
           <button name=verlassen value=<%=gemeinden[i].id_gemeinde%> class="btn btn-primary">Verlassen</button>

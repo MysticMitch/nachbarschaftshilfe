@@ -1,6 +1,6 @@
 <%- include("header") -%>
 
-<h1>Einkaufsliste aufgeben</h1>
+<h1>Liste aufgeben</h1>
 
 <form action=/aufgeben name="eingabe" method="POST">
 
@@ -23,9 +23,9 @@
     <div id="platzhalter1"></div>
 
     <input type="button" class="btn btn-primary btn-sm" onclick="addProduct()" value="Produkt hinzufügen"></input>
-    <input type="button" class="btn btn-primary btn-sm" onclick="removeProduct()" value="Produkt entfernen"></input><br style="line-height: 40px"/>
-    <input type="submit" class="btn btn-primary btn-sm" value="Einkaufsliste senden"></input>
-    <input type="button" class="btn btn-primary btn-sm" onclick="resetAll()" value="Eingaben löschen"></input>
+    <input type="button" class="btn btn-primary btn-sm" onclick="removeProduct()" value="Produkt entfernen"></input><br>
+    <input type="submit" style="margin-top: 2.5px;" class="btn btn-primary btn-sm" value="Einkaufsliste senden"></input>
+    <input type="button" style="margin-top: 2.5px;" class="btn btn-primary btn-sm" onclick="resetAll()" value="Eingaben löschen"></input>
     </form>
 
     <script>

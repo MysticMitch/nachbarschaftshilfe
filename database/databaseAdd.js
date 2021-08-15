@@ -100,7 +100,7 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
   
 
     function addGemeinde(idWohnsitz, bezeichnung){
-      connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1, 0);", [idWohnsitz, bezeichnung], function (err, result) {
+      connection.query("INSERT INTO gemeinde VALUES (default, ?, ?, 1);", [idWohnsitz, bezeichnung], function (err, result) {
       if (err){console.log("Fehler beim Einfügen der Gemeinde aufgetreten.");return false;}
       console.log("Gemeinde wurde hinzugefügt.");
       return true;
