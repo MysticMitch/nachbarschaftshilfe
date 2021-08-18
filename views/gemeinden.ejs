@@ -16,7 +16,7 @@
 
           <% ausgabezeile = ""; %>
 
-          <% if(gemeinden[i].mitglieder){ausgabezeile += "Mitglieder: " + gemeinden[i].mitglieder}%>
+          <% ausgabezeile += "Mitglieder: " + gemeinden[i].mitglieder%>
           <% if(gemeinden[i].ortsname){ausgabezeile +=  ", " +  gemeinden[i].ortsname + " "}%>
           <% if(gemeinden[i].postleitzahl){ausgabezeile += gemeinden[i].postleitzahl}%>
           <% if(gemeinden[i].strasse){ausgabezeile += ", " + gemeinden[i].strasse + " "}%>

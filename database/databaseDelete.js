@@ -13,6 +13,7 @@ function deleteBeitritt(idPerson, idGemeinde, callback){
         connection.query("DELETE FROM beigetreten WHERE fk_person = ? AND fk_gemeinde = ?;", [idPerson, idGemeinde], function (err, result) {
           if (err){console.log("Fehler beim Löschen einer Person aus einer Gemeinde aufgetreten.");return callback(false);}
           console.log("Person wurde aus Gemeinschaft entfernt.");
+          deleteMitglied(idGemeinde);
           return callback(true);
           });}
   });
@@ -24,6 +25,12 @@ function deleteBesitzt(idAusgeber, idGemeinde){
     if (err){console.log("Fehler beim Löschen von Einkaufslisten aus besitzt Tabelle.");return false;}
     });
     return true;
+}
+
+function deleteMitglied(idGemeinde){
+  connection.query("UPDATE gemeinde SET mitglieder = mitglieder -1  WHERE id_gemeinde = ?;", [idGemeinde], function (err, result) {
+    if (err){console.log("Fehler beim Verringern der Mitgliederanzahl aufgetreten.");return false;}
+    });
 }
 
 

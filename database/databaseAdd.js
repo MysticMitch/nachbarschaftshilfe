@@ -29,6 +29,7 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
             if (err){console.log("Fehler beim Einfügen einer Person zu einer Gemeinde aufgetreten.");return false;}
             console.log("Person ist einer Gemeinde beigetreten.");
             });
+            addMitglied(idGemeinde);
           
             //Fülle Tabelle beitreten mit den Einkaufslisten der Person zugehörig zur beigetretenen Gemeinde
             getEinkaufslisten(idPerson, function(idEinkaufslisten){for(let i = 0; i < idEinkaufslisten.length; i++){addBesitzt(idGemeinde, idEinkaufslisten[i], idPerson)}});
@@ -36,6 +37,12 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
           }
     });
   }
+
+    function addMitglied(idGemeinde){
+      connection.query("UPDATE gemeinde SET mitglieder = mitglieder + 1 WHERE id_gemeinde = ?;", [idGemeinde], function (err, result) {
+        if (err){console.log("Fehler beim Erhöhen der Mitgliederanzahl aufgetreten.");return false;}
+        });
+    }
   
     function addWohnsitz(ortsname, postleitzahl, strasse, hausnummer){
       connection.query("INSERT INTO wohnsitz VALUES (default, ?, ?, ?, ?);", [ortsname, makeNull(postleitzahl), makeNull(strasse), makeNull(hausnummer)], function (err, result) {
