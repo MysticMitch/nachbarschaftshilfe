@@ -184,6 +184,12 @@ app.post("/beitretenoderverlassen", (req, res) => {
         res.render("ehrenhalle.ejs");
       }});
 
+      app.post("/anpassen", (req, res) => {
+        if(!checkSession(req,res)){return;}
+      dbEdit.updatePerson( req.session.idperson, req.body.vorname, req.body.nachname, req.body.ortsname, req.body.plz, req.body.strasse, req.body.hausnr, req.body.telefon);  
+      res.render("menu.ejs"); 
+      });
+
     //Falsche POST Requests landen hier
     app.post("*", (req, res) => {
     if(!checkSession(req,res)){return;}
