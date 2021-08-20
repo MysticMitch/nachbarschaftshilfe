@@ -96,6 +96,44 @@ const connection = require("./connection.js").connection;
     });
   }
 
+
+
+  function getEinkaufslistenSelf(idPerson){
+    
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT DISTINCT p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM produkt p, besitzt b WHERE  b.fk_ausgeber = ? AND p.fk_einkaufsliste = b.fk_einkaufsliste;", [idPerson], function (err, result) {
+          if (err){return resolve("");}
+
+          if(result == ""){
+            console.log("Keine aufgegebenen Einkaufslisten gefunden.");
+            return resolve("");
+          }
+
+          let map = verarbeiteEinkaufslisten(result);
+
+          return resolve(map);
+        });
+    });
+  }
+
+  function getEinkaufslistenBearbeitung(idPerson){
+    
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT DISTINCT p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM gemeinde g, produkt p, besitzt b WHERE p.fk_einkaufsliste IN (SELECT id_einkaufsliste FROM einkaufsliste WHERE fk_bearbeiter = ?) AND b.fk_einkaufsliste IN (SELECT id_einkaufsliste FROM einkaufsliste WHERE fk_bearbeiter = ?);", [idPerson, idPerson], function (err, result) {
+          if (err){return resolve("");}
+
+          if(result == ""){
+            console.log("Keine aufgegebenen Einkaufslisten gefunden.");
+            return resolve("");
+          }
+
+          let map = verarbeiteEinkaufslisten(result);
+
+          return resolve(map);
+        });
+    });
+  }
+
 async function verarbeiteEinkaufslisten(input){
     
     let zuordnung = new Map();
@@ -129,3 +167,5 @@ async function verarbeiteEinkaufslisten(input){
   module.exports.getPassword = getPassword;
   module.exports.getGemeinden = getGemeinden;
   module.exports.getEinkaufslisten = getEinkaufslisten;
+  module.exports.getEinkaufslistenSelf = getEinkaufslistenSelf;
+  module.exports.getEinkaufslistenBearbeitung = getEinkaufslistenBearbeitung;

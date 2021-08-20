@@ -19,6 +19,22 @@ function deleteBeitritt(idPerson, idGemeinde, callback){
   });
 }
 
+function deleteEinkaufsliste(idEinkaufsliste){
+
+  connection.query("DELETE FROM produkt WHERE fk_einkaufsliste = ?", [idEinkaufsliste], function (err, result) {
+    if (err){console.log("Fehler beim Löschen der eigenen Produkte aufgetreten.");return false;}
+
+
+  connection.query("DELETE FROM besitzt WHERE fk_einkaufsliste = ?", [idEinkaufsliste], function (err, result) {
+    if (err){console.log("Fehler beim Löschen der eigenen Produkte aufgetreten.");return false;}
+
+
+  connection.query("DELETE FROM einkaufsliste WHERE id_einkaufsliste = ?", [idEinkaufsliste], function (err, result) {
+    if (err){console.log("Fehler beim Löschen der eigenen Einkaufsliste aufgetreten.");return false;}
+    });
+  });
+});}
+
 //Löscht eine Relation zwischen Einkaufsliste & Gemeinde, bzw Daten aus besitzt Tabelle
 function deleteBesitzt(idAusgeber, idGemeinde){
   connection.query("DELETE FROM besitzt WHERE fk_ausgeber = ? AND fk_gemeinde = ?;", [idAusgeber, idGemeinde], function (err, result) {
@@ -36,3 +52,4 @@ function deleteMitglied(idGemeinde){
 
 module.exports.deleteBeitritt = deleteBeitritt;
 module.exports.deleteBesitzt = deleteBesitzt;
+module.exports.deleteEinkaufsliste = deleteEinkaufsliste;
