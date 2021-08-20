@@ -98,7 +98,7 @@ const connection = require("./connection.js").connection;
 
 
 
-  function getEinkaufslistenSelf(idPerson){
+   function getEinkaufslistenSelf(idPerson){
     
     return new Promise((resolve, reject) => {
         connection.query("SELECT DISTINCT p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM produkt p, besitzt b WHERE  b.fk_ausgeber = ? AND p.fk_einkaufsliste = b.fk_einkaufsliste;", [idPerson], function (err, result) {
@@ -169,3 +169,39 @@ async function verarbeiteEinkaufslisten(input){
   module.exports.getEinkaufslisten = getEinkaufslisten;
   module.exports.getEinkaufslistenSelf = getEinkaufslistenSelf;
   module.exports.getEinkaufslistenBearbeitung = getEinkaufslistenBearbeitung;
+
+
+
+
+
+
+
+
+  //Ungenutzt
+ /*function checkBearbeitung(input){
+
+  let idEinkaufslisten = Array.from(input.keys());
+  let ergebnis = new Map();
+  let map = new Map();
+
+  connection.query("SELECT id_einkaufsliste, bearbeitung FROM einkaufsliste", function (err, result) {
+  
+  //Alle Einkaufslisten in eine Map
+  for(let i = 0; i < result.length; i++){
+  map.set(Object.values(result[i])[0], Object.values(result[i])[1]);
+  }  
+
+  //Setzt relevante Einkaufsliste mit Bearbeitungstatus in eine Map
+  for(let j = 0; j < idEinkaufslisten.length; j++){
+    ergebnis.set(idEinkaufslisten[j], map.get(idEinkaufslisten[j]));
+  }
+
+  for (let [key, value] of input) {
+    value[0].status = ergebnis.get(key);
+  }
+  
+  
+  return input;
+
+ });
+}*/
