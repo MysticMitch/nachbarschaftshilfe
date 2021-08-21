@@ -3,7 +3,7 @@ const cred = require("./credentials.js");
 const daten = cred.daten; //Modul.Objekt
 
 const  connection = mysql.createConnection({
-    host: cred.host,
+    host: daten.host,
     user: daten.user,
     password: daten.password,
     database: daten.database

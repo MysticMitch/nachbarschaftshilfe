@@ -1,8 +1,32 @@
 <footer>
 </footer>
 
-    <script>     
+    </div>
 
+    <style>
+    .headline {
+        margin-left: 90px;
+    }
+
+
+
+    @media (max-width : 414px) {
+
+       .headline{
+        margin-left: 1px;
+        text-align: left;
+       }
+
+       .produkte {
+        text-align: left;
+       }
+
+}
+
+
+</style>
+
+    <script>    
     let x = document.getElementsByTagName("h1")[0].textContent;
     if(x === "Login" || x == "Registrieren"){
      document.getElementsByTagName("form")[0].style.display = "none";

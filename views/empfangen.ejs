@@ -1,10 +1,10 @@
 <%- include("header") -%>
 
-<h1>Liste aufgeben</h1>
+<h1 class="headline">Einkaufsliste aufgeben</h1>
 
 <form action=/aufgeben name="eingabe" method="POST">
 
-    <div id="felder">
+    <div class="produkte" id="felder">
     <b><label for="Bezeichnung">Produkt</label><br></b>
     <input type="text" name="bezeichnung" required><br><br>
     
@@ -20,13 +20,14 @@
     <label for="liter">Liter</label><br>
     <input type="number" name="liter"><br><br></div>
     
-    <div id="platzhalter1"></div>
+    <div class="produkte" id="platzhalter1"></div>
 
-    <input type="button" class="btn btn-primary btn-sm" onclick="addProduct()" value="Produkt hinzufügen"></input>
-    <input type="button" class="btn btn-primary btn-sm" onclick="removeProduct()" value="Produkt entfernen"></input><br>
-    <input type="submit" style="margin-top: 2.5px;" class="btn btn-primary btn-sm" value="Einkaufsliste senden"></input>
-    <input type="button" style="margin-top: 2.5px;" class="btn btn-primary btn-sm" onclick="resetAll()" value="Eingaben löschen"></input>
-    </form>
+    <div class="produkte">
+    <input type="button" style="width: 119px; height:29px;" class="btn btn-primary btn-sm" onclick="addProduct()" value="Produkt hinzufügen"></input>
+    <input type="button" style="width: 119px; height:29px;" class="btn btn-primary btn-sm" onclick="removeProduct()" value="Produkt entfernen"></input><br>
+    <input type="submit" style="margin-top: 3px;  height:29px; width: 119px;" class="btn btn-primary btn-sm" value="Einkaufsliste senden"></input>
+    <input type="button" style="margin-top: 3px;  height:29px; width: 119px;" class="btn btn-primary btn-sm" onclick="resetAll()" value="Eingaben löschen"></input>
+    </form></div>
 
     <script>
         let count = 1;
