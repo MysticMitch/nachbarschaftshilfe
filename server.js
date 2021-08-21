@@ -3,7 +3,7 @@ const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const express = require("express");
 const app = express();
-const port = 443;
+const port = 5000;
 
 const dbRead = require("./database/databaseRead.js");
 const dbAdd = require("./database/databaseAdd.js");
