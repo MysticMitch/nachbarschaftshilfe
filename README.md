@@ -1,21 +1,9 @@
 # Nachbarschaftshilfe
 
-Eine WebApp für private Nachbarschaftshilfe. Aufgebaut mit mySQL, NODE JS und React.
+Eine WebApp für private Nachbarschaftshilfe. Aufgebaut mit MySQL und NodeJS.
 
-NPM einbinden:
-npm init -y
+Das Repositorium ist derzeit privat auf Github und wird genutzt, damit zwischen Entwicklungsumgebung (zu Hause) und der Codebasis auf externem Linux Server synchronisiert werden kann.
 
-Express einbinden:
-npm i express
+Unter dem Ordner "notes" befindet sich eine Anleitung, mithilfe der man die Anwendung zu Hause aufzusetzen kann.
 
-Nodemon installieren:
-npm i nodemon
-
-Server ausführen:
-npm run dev
-
-Server Ausführung beenden:
-STRG+C
-
-EJS einbinden:
-npm i ejs
+Die Entwicklungszeit betrug etwa 3 Monate.

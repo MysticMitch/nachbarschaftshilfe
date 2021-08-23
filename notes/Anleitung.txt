@@ -1,0 +1,71 @@
+Anleitung zur Verwendung der Codebasis in eigener Entwicklungsumgebung
+
+1. MySQL installieren
+
+2. Einen Nutzer oder Admin in MySQL anlegen
+
+3. Eine Datenkbank mit dem Namen "nachbarschaft" anlegen
+
+4. Tabellen in dieser Datenbank anlegen (siehe Tabellen.txt in diesem Ordner)
+
+5. NodeJS installieren
+
+6. NPM (Node Package Manager) installieren
+
+7. Eine Entwicklungsumgebung wie Visual Studio Code installieren
+
+8. In der Entwicklungsumgebung dieses Projekt (nachbarschaftshilfe) öffnen
+
+9. Das Terminal bzw. die Konsole aufrufen (obere Leiste>Terminal>Neues Terminal)
+
+10. Folgende Befehle ausführen:
+
+    NPM einbinden:
+    npm init -y
+
+    Nodemon installieren:
+    npm install nodemon
+
+    EJS einbinden:
+    npm install ejs
+
+    MySQL2 einbinden:
+    npm install mysql2
+
+    Express einbinden:
+    npm install express
+
+    Express-Session einbinden:
+    npm install express-session
+
+    Bycrptjs einbinden:
+    npm install bycrptjs
+
+11. Im Ordner "database" eine Javascript-Datei namens "credentials.js" anlegen
+
+12. Die credentials.js Datei sieht folgendermaßen aus. Hier "user" und "password" ausfüllen
+
+     const daten = {
+     host: "localhost",
+     user: "HIER_NUTZERNAME",
+     password: "HIER_PASSWORT",
+     database: "nachbarschaft",
+     };
+     module.exports.daten = daten;
+
+13. Nun kann die Anwendung gestartet werden. Dazu wieder das Terminal bzw. die Konsole aufrufen 
+
+    Anwendung ausführen:
+    npm run dev
+
+14. Die Anwendung ist nun über einen Browser zugreifbar. In der URL "http://localhost:5000/" eingeben
+
+15. Wenn zur Datenbank keine Verbindung aufgebaut werden konnte, sollte man den MySQL Dienst starten
+    Bei Dauereinsatz lohnt es sich, den MySQL Dienst beim Autostart einzutragen
+    Bei Windows: Windowstaste>Dienste>MySQL80 anschließend Rechtsklick und Starten
+    Bei Linux: sudo service mysql start
+
+16. Die Anwendung kann mit folgender Tastenkombination beendet werden. Dabei sollte man sich im Terminal befinden.
+
+    Anwendung beenden:
+    STRG+C

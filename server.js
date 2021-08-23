@@ -14,7 +14,7 @@ const dbEdit = require("./database/databaseEdit.js");
 app.set("view-engine", "ejs");
 
 //Auf Port hören
-app.listen(port, () => console.log("Server läuft auf Port "+port));
+app.listen(port, () => console.log("Server läuft auf Port "+port+" - "+new Date));
 
 //Public Ordner static enthält Bilder
 app.use("/public", express.static("./public")); 

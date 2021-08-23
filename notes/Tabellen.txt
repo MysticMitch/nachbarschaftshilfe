@@ -1,0 +1,81 @@
+CREATE TABLE wohnsitz (
+  id_wohnsitz int NOT NULL AUTO_INCREMENT,
+  ortsname varchar(30) DEFAULT NULL,
+  postleitzahl int DEFAULT NULL,
+  strasse varchar(30) DEFAULT NULL,
+  hausnummer int DEFAULT NULL,
+  PRIMARY KEY (id_wohnsitz)
+);
+
+CREATE TABLE person (
+  id_person int NOT NULL AUTO_INCREMENT,
+  fk_wohnsitz int NOT NULL,
+  nutzername varchar(20) NOT NULL,
+  passwort char(60) NOT NULL,
+  vorname varchar(20) DEFAULT NULL,
+  nachname varchar(20) DEFAULT NULL,
+  telefonnummer int DEFAULT NULL,
+  heldenpunkte int DEFAULT '0',
+  PRIMARY KEY (id_person),
+  UNIQUE KEY nutzername_UNIQUE (nutzername),
+  KEY person_fk_wohnsitz_idx (fk_wohnsitz),
+  CONSTRAINT person_fk_wohnsitz FOREIGN KEY (fk_wohnsitz) REFERENCES wohnsitz (id_wohnsitz)
+);
+
+CREATE TABLE einkaufsliste (
+  id_einkaufsliste int NOT NULL AUTO_INCREMENT,
+  fk_ausgeber int NOT NULL,
+  fk_bearbeiter int DEFAULT NULL,
+  ausgabedatum datetime DEFAULT NULL,
+  bearbeitung tinyint DEFAULT '0',
+  abgeschlossen tinyint DEFAULT '0',
+  preis double DEFAULT '0',
+  PRIMARY KEY (id_einkaufsliste),
+  KEY einkaufsliste_fk_ausgeber_idx (fk_ausgeber),
+  CONSTRAINT einkaufsliste_fk_ausgeber FOREIGN KEY (fk_ausgeber) REFERENCES person (id_person)
+);
+
+CREATE TABLE produkt (
+  id_produkt int NOT NULL AUTO_INCREMENT,
+  fk_einkaufsliste int NOT NULL,
+  bezeichnung varchar(40) DEFAULT NULL,
+  marke varchar(20) DEFAULT NULL,
+  menge double DEFAULT NULL,
+  kilogramm double DEFAULT NULL,
+  liter double DEFAULT NULL,
+  PRIMARY KEY (id_produkt),
+  KEY produkt_fk_einkaufsliste_idx (fk_einkaufsliste),
+  CONSTRAINT produkt_fk_einkaufsliste FOREIGN KEY (fk_einkaufsliste) REFERENCES einkaufsliste (id_einkaufsliste)
+);
+
+CREATE TABLE gemeinde (
+  id_gemeinde int NOT NULL AUTO_INCREMENT,
+  fk_wohnsitz int NOT NULL,
+  bezeichnung varchar(30) NOT NULL,
+  mitglieder int DEFAULT '0',
+  PRIMARY KEY (id_gemeinde),
+  UNIQUE KEY bezeichnung_UNIQUE (bezeichnung),
+  KEY gemeinde_fk_wohnsitz_idx (fk_wohnsitz),
+  CONSTRAINT gemeinde_fk_wohnsitz FOREIGN KEY (fk_wohnsitz) REFERENCES wohnsitz (id_wohnsitz)
+);
+
+CREATE TABLE besitzt (
+  fk_gemeinde int NOT NULL,
+  fk_einkaufsliste int NOT NULL,
+  fk_ausgeber int NOT NULL,
+  PRIMARY KEY (fk_gemeinde,fk_einkaufsliste),
+  KEY besitzt_fk_einkaufsliste_idx (fk_einkaufsliste),
+  CONSTRAINT besitzt_fk_einkaufsliste FOREIGN KEY (fk_einkaufsliste) REFERENCES einkaufsliste (id_einkaufsliste),
+  CONSTRAINT besitzt_fk_gemeinde FOREIGN KEY (fk_gemeinde) REFERENCES gemeinde (id_gemeinde)
+);
+
+CREATE TABLE beigetreten (
+  fk_person int NOT NULL,
+  fk_gemeinde int NOT NULL,
+  beitrittsdatum datetime DEFAULT NULL,
+  PRIMARY KEY (fk_person,fk_gemeinde),
+  KEY id_gemeinde_idx (fk_gemeinde),
+  KEY b_id_person_idx (fk_person),
+  CONSTRAINT beigetreten_fk_gemeinde FOREIGN KEY (fk_gemeinde) REFERENCES gemeinde (id_gemeinde),
+  CONSTRAINT beigetreten_fk_person FOREIGN KEY (fk_person) REFERENCES person (id_person)
+);
