@@ -1,6 +1,6 @@
 <%- include("header") -%>
 
-<h1 class="headline">Mein Profil</h1>
+<h1 class="headline"><%=daten.person[1] + " " + daten.person[2]%></h1>
 
 <div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
@@ -9,7 +9,6 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title"><%=daten.person[1] + " " + daten.person[2]%></h5>
           <% let metadaten = ["Nutzername", "Vorname", "Nachname", "Telefonnr.", "Heldenpunkte", "Wohnort", "Postleitzahl", "Straße", "Hausnr."]; %>
           <table style="width:100%">
             <% for(let i = 0; i < daten.person.length; i++){ %>
