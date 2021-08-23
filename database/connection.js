@@ -11,7 +11,7 @@ const  connection = mysql.createConnection({
   });
 
   connection.on("error", function(err) {
-    console.log("Datenbankverbindung fehlgeschlagen " + new Date);
+    console.log("Datenbankverbindung fehlgeschlagen - " + new Date);
     exec("systemctl start 'mysql'");
     exec("systemctl restart 'mysql'");
     exec("pm2 restart 'server.js'");

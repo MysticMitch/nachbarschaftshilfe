@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended:false}));
 //Session Standard Werte
 app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
 
-//********************************************************************************//
+//**************************** HTTP GET METHODEN ********************************//
 
 app.get("/", (req, res) => {
   req.session.success = false;
@@ -93,7 +93,7 @@ app.get("*", (req, res) => {
   res.render("menu.ejs");
 });
 
-//********************************************************************************//
+//************************ HTTP POST METHODEN ******************************//
 
 app.post("/login", async (req, res) => {
   try {

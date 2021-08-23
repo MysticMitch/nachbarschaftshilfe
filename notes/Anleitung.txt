@@ -4,7 +4,7 @@ Anleitung zur Verwendung der Codebasis in eigener Entwicklungsumgebung
 
 2. Einen Nutzer oder Admin in MySQL anlegen
 
-3. Eine Datenkbank mit dem Namen "nachbarschaft" anlegen
+3. Eine Datenkbank (Datenbankschema) mit dem Namen "nachbarschaft" anlegen
 
 4. Tabellen in dieser Datenbank anlegen (siehe Tabellen.txt in diesem Ordner)
 
@@ -19,9 +19,6 @@ Anleitung zur Verwendung der Codebasis in eigener Entwicklungsumgebung
 9. Das Terminal bzw. die Konsole aufrufen (obere Leiste>Terminal>Neues Terminal)
 
 10. Folgende Befehle ausführen:
-
-    NPM einbinden:
-    npm init -y
 
     Nodemon installieren:
     npm install nodemon
@@ -62,7 +59,7 @@ Anleitung zur Verwendung der Codebasis in eigener Entwicklungsumgebung
 
 15. Wenn zur Datenbank keine Verbindung aufgebaut werden konnte, sollte man den MySQL Dienst starten
     Bei Dauereinsatz lohnt es sich, den MySQL Dienst beim Autostart einzutragen
-    Bei Windows: Windowstaste>Dienste>MySQL80 anschließend Rechtsklick und Starten
+    Bei Windows: Windowstaste>Dienste>MySQL80 darauf Rechtsklick und Starten
     Bei Linux: sudo service mysql start
 
 16. Die Anwendung kann mit folgender Tastenkombination beendet werden. Dabei sollte man sich im Terminal befinden.
