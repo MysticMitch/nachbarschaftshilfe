@@ -23,7 +23,7 @@ app.use("/public", express.static("./public"));
 app.use(express.urlencoded({extended:false}));
 
 //Session Standard Werte
-app.use(session({secret: "secret-key", resave: false, saveUninitialized: false}));
+app.use(session({secret: "s-secret-key", resave: false, saveUninitialized: false}));
 
 //**************************** HTTP GET METHODEN ********************************//
 
@@ -37,9 +37,9 @@ req.session.success = false;
 res.render("login.ejs");
 });
 
-app.get("/register", (req, res) => {
+app.get("/registrieren", (req, res) => {
   req.session.success = false;
-  res.render("register.ejs");
+  res.render("registrieren.ejs");
 });
 
 app.get("/logout", (req, res) => {
@@ -110,12 +110,12 @@ app.post("/login", async (req, res) => {
       res.render("login.ejs");
     }
   } catch {
-    console.log("Fehler");
-    res.render("errorpage.ejs");
+    console.log("Fehler beim Login");
+    res.render("login.ejs");
   }
   });
   
-  app.post("/register", async (req, res) =>{
+  app.post("/registrieren", async (req, res) =>{
     try{
         const salt = await bcrypt.genSalt(10);
         let passwort = await bcrypt.hash(req.body.passwort, salt);
@@ -123,8 +123,8 @@ app.post("/login", async (req, res) => {
         res.render("login.ejs");
     }
     catch {
-        console.log("Fehler");
-        res.render("errorpage.ejs");
+        console.log("Fehler bei der Registrierung");
+        res.render("login.ejs");
     }
   });
 
@@ -148,8 +148,8 @@ app.post("/grunden", async (req, res) =>{
       res.render("menu.ejs");
   }
   catch {
-      console.log("Fehler");
-      res.render("errorpage.ejs");
+    console.log("Fehler bei Gemeinschaft Gründung");
+    res.render("menu.ejs");
   }
 });
 
