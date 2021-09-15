@@ -1,5 +1,28 @@
 <%- include("header") -%>
 
-<h1 class="headline">Hall of Fame</h1>
+<h1>Hall of Fame</h1>
+
+<% let text = ""; %>
+<% for(var i=0; i < personen.length; i++) { %>
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+    <img src="/public/held.png" class="card-img-top" alt="..." style="max-height: 260px; max-width:310px; padding: 1px;">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <% if(personen[i].heldenpunkte == 1){ text = "Heldenpunkt"}else{text= "Heldenpunkte"}%>
+          <h5 class="card-title"><%=personen[i].heldenpunkte%> <%=text%></h5>
+          <p class="card-text"><%=personen[i].vorname%> <%=personen[i].nachname%> aus <%=personen[i].ortsname%></p>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% } %>
+
+<br><br>
 
 <%- include("footer") -%>

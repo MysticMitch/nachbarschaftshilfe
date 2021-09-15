@@ -134,6 +134,22 @@ const connection = require("./connection.js").connection;
     });
   }
 
+  function getPersonen(){
+    
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT heldenpunkte, nachname, vorname, ortsname FROM person, wohnsitz WHERE fk_wohnsitz = id_wohnsitz ORDER BY heldenpunkte DESC;", function (err, result) {
+          if (err){return resolve("");}
+
+          if(result == ""){
+            console.log("Keine Personen mit Punkten gefunden.");
+            return resolve("");
+          }
+
+          return resolve(result);
+        });
+    });
+  }
+
 async function verarbeiteEinkaufslisten(input){
     
     let zuordnung = new Map();
@@ -164,6 +180,7 @@ async function verarbeiteEinkaufslisten(input){
 
   module.exports.getID = getID;
   module.exports.getPerson = getPerson;
+  module.exports.getPersonen = getPersonen;
   module.exports.getPassword = getPassword;
   module.exports.getGemeinden = getGemeinden;
   module.exports.getEinkaufslisten = getEinkaufslisten;

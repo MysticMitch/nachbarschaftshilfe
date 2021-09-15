@@ -83,10 +83,6 @@ if(!checkSession(req,res)){return;}
   res.render("gemeinden.ejs", {gemeinden});
 });
 
-app.get("/test", (req, res) => {
-  res.render("test.ejs");
-  });
-
 //Falsche GET Requests landen hier
 app.get("*", (req, res) => {
   if(!checkSession(req,res)){return;}
@@ -185,12 +181,13 @@ app.post("/beitretenoderverlassen", (req, res) => {
     });
 
     
-    app.post("/profil", (req, res) => {
+    app.post("/profil", async (req, res) => {
       if(!checkSession(req,res)){return;}
       if(req.body.anpassen){
       res.render("anpassung.ejs");
       }else if(req.body.ehrenhalle){
-        res.render("ehrenhalle.ejs");
+       let personen = await dbRead.getPersonen();
+       res.render("ehrenhalle.ejs", {personen});
       }});
 
       app.post("/anpassen", (req, res) => {
