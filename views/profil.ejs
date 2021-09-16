@@ -16,6 +16,9 @@
                 <%if(i == 1 || i == 2){
                     continue;
                 }%>
+
+                <% if ( daten.person[i] == null ){ daten.person[i] = "-";}%>
+
                 <tr class="card-text">
                     <th><%=metadaten[i]%></th>
                     <th><%=daten.person[i]%></th>
