@@ -36,7 +36,7 @@ Anleitung zur Verwendung der Codebasis in eigener Entwicklungsumgebung
     npm install express-session
 
     Bycrptjs einbinden:
-    npm install bycrptjs
+    npm install bcryptjs
 
 11. Im Ordner "database" eine Javascript-Datei namens "credentials.js" anlegen
 
