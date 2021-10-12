@@ -16,6 +16,15 @@ function updateBearbeiterRemove(idEinkaufsliste){
     });
 }
 
+//Unused
+function finishEinkaufsliste(idEinkaufsliste){
+    connection.query("UPDATE einkaufsliste SET fk_bearbeiter = ?, bearbeitung = 0, abgeschlossen = 1 WHERE id_einkaufsliste = ?;", [null, idEinkaufsliste], function (err, result) {
+        if (err){console.log("Fehler beim Abschluss einer Einkaufsliste aufgetreten.");return false;}
+        console.log("Einkaufsliste wurde abgeschlossen..");
+        return true;
+    });
+}
+
 function updatePerson(idPerson, vorname, nachname, ortsname, plz, strasse, hausnr, telefon){
 
     connection.query("SELECT vorname, nachname, ortsname, postleitzahl, strasse, hausnummer, telefonnummer, fk_wohnsitz FROM person, wohnsitz WHERE id_wohnsitz = fk_wohnsitz AND id_person = ?;", [idPerson], function (err, result) {
@@ -39,6 +48,7 @@ function updatePerson(idPerson, vorname, nachname, ortsname, plz, strasse, hausn
     });
 }    
 
-module.exports.updateBearbeiter = updateBearbeiter;
 module.exports.updatePerson = updatePerson;
+module.exports.updateBearbeiter = updateBearbeiter;
 module.exports.updateBearbeiterRemove = updateBearbeiterRemove;
+module.exports.finishEinkaufsliste = finishEinkaufsliste;

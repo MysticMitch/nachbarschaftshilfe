@@ -50,6 +50,8 @@ function deleteMitglied(idGemeinde){
 }
 
 
+
+
 module.exports.deleteBeitritt = deleteBeitritt;
 module.exports.deleteBesitzt = deleteBesitzt;
 module.exports.deleteEinkaufsliste = deleteEinkaufsliste;
