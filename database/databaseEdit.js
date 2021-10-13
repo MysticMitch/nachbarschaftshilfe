@@ -8,6 +8,14 @@ function updateBearbeiter(idEinkaufsliste, idBearbeiter){
     });
 }
 
+function updateHeldenpunkte(idPerson){
+    connection.query("UPDATE person SET heldenpunkte = heldenpunkte + 1 WHERE id_person = ?;", [idPerson], function (err, result) {
+        if (err){console.log("Fehler beim Inkrementieren der Heldenpunkte aufgetreten.");return false;}
+        console.log("Heldenpunkte erhöht.");
+        return true;
+    });
+}
+
 function updateBearbeiterRemove(idEinkaufsliste){
     connection.query("UPDATE einkaufsliste SET fk_bearbeiter = ?, bearbeitung = 0 WHERE id_einkaufsliste = ?;", [null, idEinkaufsliste], function (err, result) {
         if (err){console.log("Fehler beim Ändern des Bearbeiters einer Einkaufsliste aufgetreten.");return false;}
@@ -50,5 +58,6 @@ function updatePerson(idPerson, vorname, nachname, ortsname, plz, strasse, hausn
 
 module.exports.updatePerson = updatePerson;
 module.exports.updateBearbeiter = updateBearbeiter;
+module.exports.updateHeldenpunkte = updateHeldenpunkte;
 module.exports.updateBearbeiterRemove = updateBearbeiterRemove;
 module.exports.finishEinkaufsliste = finishEinkaufsliste;

@@ -199,6 +199,7 @@ app.post("/beitretenoderverlassen", (req, res) => {
       app.post("/fertigOderZuruck", (req, res) => {
       if(!checkSession(req,res)){return;} 
       if(req.body.fertig){
+      dbEdit.updateHeldenpunkte(req.session.idperson);
       dbDelete.deleteEinkaufsliste(req.body.fertig);
       res.render("menu.ejs");
       }else if(req.body.zuruck){
