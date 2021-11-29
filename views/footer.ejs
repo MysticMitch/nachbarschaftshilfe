@@ -8,18 +8,25 @@
         margin-left: 102px;
     }
 
-    @media (max-width : 416px) {
+    @media (max-width : 430px) {
 
        .headline{
         margin-left: 1px;
         text-align: left;
        }
-
-       .produkte {
-        text-align: left;
-       }
 }
 
+/* No arrows on number input fields - Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* No arrows on number input fields - Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 </style>
 
