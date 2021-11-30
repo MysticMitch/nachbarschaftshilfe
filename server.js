@@ -167,6 +167,16 @@ app.post("/beitretenoderverlassen", (req, res) => {
     let liter = req.body.liter;
     let produkte = [];
 
+    if(mengen < 0){
+      mengen = mengen * (-1);
+    }
+    if(kilogramm < 0){
+      kilogramm = kilogramm * (-1);
+    }
+    if(liter < 0){
+      liter = liter * (-1);
+    }
+
     //bezeichnungen ist string wenn nur ein Produkt, ein object wenn mehrere Produkte
     if(typeof bezeichnungen == "string"){
       let produkt = {bezeichnung:bezeichnungen, marke:marken, menge:mengen, kilogramm:kilogramm, liter:liter};
