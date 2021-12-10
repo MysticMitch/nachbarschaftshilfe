@@ -94,6 +94,17 @@ Weil wenn nur 2 Para reinkommen und 3 erwartet, verrutscht es*/
         });
     }
 
+    function isAlone(idAusgeber, callback){
+      let ergebnis = true;
+      connection.query("SELECT * FROM beigetreten WHERE fk_person = ?", [idAusgeber], function (err, result) {
+        if (err){console.log("Fehler beim Schauen ob Person einer Gemeinde angehört.");return callback(ergebnis);}
+        if(result.values.length <= 0){
+          ergebnis = false;
+        }
+        return callback(ergebnis);
+        });
+    }
+
     function getGemeindePrimary(callback){
       let ergebnis = null;
       connection.query("SELECT max(id_gemeinde) FROM gemeinde;", function (err, result) {
@@ -178,6 +189,7 @@ function gemeindeAnlegen(idPerson, bezeichnung, ortsname, postleitzahl, strasse,
 function einkaufslisteAnlegen(idAusgeber, produkte){
   addEinkaufsliste(idAusgeber);
   getEinkaufslistePrimary(function(idEinkaufsliste){for(let i = 0; i < produkte.length; i++){addProdukt(idEinkaufsliste, produkte[i].bezeichnung, produkte[i].marke, produkte[i].menge, produkte[i].kilogramm, produkte[i].liter);}
+  isAlone(idAusgeber, function(alone){if(alone == true){console.log("Einkaufsliste angelegt."); return;}})
   getGemeinden(idAusgeber, function(arrayGemeinden){for(let j = 0; j < arrayGemeinden.length; j++){addBesitzt(arrayGemeinden[j], idEinkaufsliste, idAusgeber);}});
   console.log("Einkaufsliste wurde angelegt.");
   });
@@ -190,7 +202,7 @@ function personAnlegen(nutzername, passwort, vorname, nachname, telefon, ortsnam
   });
 }
 
-//Leere Eingabe gibte ein "" oder undefined
+//Leere Eingabe gibt ein "" oder undefined
 function makeNull(input){
   if(input === "" || input === undefined){input = null;}
   return input;
