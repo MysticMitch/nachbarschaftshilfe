@@ -81,7 +81,7 @@ const connection = require("./connection.js").connection;
   function getEinkaufslisten(idPerson){
     
     return new Promise((resolve, reject) => {
-        connection.query("SELECT DISTINCT p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM gemeinde g, produkt p, besitzt b WHERE  b.fk_ausgeber != ? AND p.fk_einkaufsliste IN (SELECT DISTINCT id_einkaufsliste FROM besitzt, einkaufsliste WHERE einkaufsliste.fk_ausgeber != ?  AND einkaufsliste.bearbeitung < 1 AND fk_gemeinde IN (SELECT fk_gemeinde FROM beigetreten WHERE fk_person = ?));", [idPerson, idPerson, idPerson], function (err, result) {
+        connection.query("p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM gemeinde g, produkt p, besitzt b WHERE p.fk_einkaufsliste = b.fk_einkaufsliste AND b.fk_ausgeber != ? AND p.fk_einkaufsliste IN (SELECT DISTINCT id_einkaufsliste FROM besitzt, einkaufsliste WHERE einkaufsliste.fk_ausgeber != ?  AND einkaufsliste.bearbeitung < 1 AND fk_gemeinde IN (SELECT fk_gemeinde FROM beigetreten WHERE fk_person = ?));", [idPerson, idPerson, idPerson], function (err, result) {
           if (err){return resolve("");}
 
           if(result == ""){
@@ -90,7 +90,7 @@ const connection = require("./connection.js").connection;
           }
 
           let map = verarbeiteEinkaufslisten(result);
-
+          
           return resolve(map);
         });
     });
@@ -101,7 +101,7 @@ const connection = require("./connection.js").connection;
    function getEinkaufslistenSelf(idPerson){
     
     return new Promise((resolve, reject) => {
-        connection.query("SELECT DISTINCT p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM produkt p, besitzt b WHERE  b.fk_ausgeber = ? AND p.fk_einkaufsliste = b.fk_einkaufsliste;", [idPerson], function (err, result) {
+        connection.query("SELECT DISTINCT p.bezeichnung, b.fk_ausgeber, p.fk_einkaufsliste, p.bezeichnung,  p.kilogramm, p.liter, p.marke, p.menge FROM gemeinde g, produkt p, besitzt b WHERE p.fk_einkaufsliste = b.fk_einkaufsliste AND b.fk_ausgeber != ? AND p.fk_einkaufsliste IN (SELECT DISTINCT id_einkaufsliste FROM besitzt, einkaufsliste WHERE einkaufsliste.fk_ausgeber != ? AND einkaufsliste.bearbeitung < 1 AND fk_gemeinde IN (SELECT fk_gemeinde FROM beigetreten WHERE fk_person = ?));", [idPerson], function (err, result) {
           if (err){return resolve("");}
 
           if(result == ""){
